@@ -13,13 +13,13 @@
 #include <stdarg.h>
 #include "libft/libft.h"
 
-void	ft_printarg(va_list *lst, char c)
+void	ft_printarg(va_list *lst, char type)
 {
-	void	(*parg[128]) (size_t a);
+	void	(*parg[128]) (void *a);
 
 	parg['c'] = ft_putchar;
 	parg['d'] = ft_putnbr;
-	parg[c](va_arg(*lst, type[c]))
+	parg[type](va_arg(*lst, char));
 }
 
 void	ft_printf(char *c, ...)
