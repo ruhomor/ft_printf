@@ -13,27 +13,27 @@
 #include <stdarg.h>
 #include "libft/libft.h"
 
+void	ft_printarg(va_list *lst, char c)
+{
+	if (c == 'c')
+		ft_putchar(va_arg(*lst, int));
+	if (c == 'd')
+//f pointer
+//implementation
+//awaits
+}
+
 void	ft_printf(char *c, ...)
 {
-	char	*s;
 	va_list	lst;
 
 	va_start(lst, c);
-	while (*c != '\0')
+	while (*c)
 	{
-		if (*c != '%')
-		{
-			ft_putchar(*c);
-			c++;
-			continue;
-		}
+		while (*c != '%')
+			ft_putchar(*c++);
 		c++;
-		if (*c == '\0')
-		{
-			break ;
-		}
-		handle //handle arg types_function
-		c++;
+		ft_printarg(&lst, c);
 	}
 	va_end(lst);
 }
