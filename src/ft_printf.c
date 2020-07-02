@@ -15,12 +15,11 @@
 
 void	ft_printarg(va_list *lst, char c)
 {
-	if (c == 'c')
-		ft_putchar(va_arg(*lst, int));
-	if (c == 'd')
-//f pointer
-//implementation
-//awaits
+	void	(*parg[128]) (size_t a);
+
+	parg['c'] = ft_putchar;
+	parg['d'] = ft_putnbr;
+	parg[c](va_arg(*lst, type[c]))
 }
 
 void	ft_printf(char *c, ...)
@@ -33,7 +32,7 @@ void	ft_printf(char *c, ...)
 		while (*c != '%')
 			ft_putchar(*c++);
 		c++;
-		ft_printarg(&lst, c);
+		ft_printarg(&lst, *c);
 	}
 	va_end(lst);
 }
