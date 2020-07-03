@@ -15,7 +15,7 @@
 void	ft_printarg(va_list *lst, char type)
 {
 	if (type == 'c')
-		ft_putchar(va_arg(*lst, char));
+		ft_putchar(va_arg(*lst, int));
 	if (type == 'd')
 		ft_putnbr(va_arg(*lst, int));
 }
@@ -25,12 +25,13 @@ void	ft_printf(char *c, ...)
 	va_list	lst;
 
 	va_start(lst, c);
-	while (*c)
+	while (*c != '\0')
 	{
-		while (*c != '%')
-			ft_putchar(*c++);
+		if (*c != '%')
+			ft_putchar(*c);
+		else
+			ft_printarg(&lst, *++c);
 		c++;
-		ft_printarg(&lst, *c);
 	}
 	va_end(lst);
 }

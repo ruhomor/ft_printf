@@ -3,7 +3,7 @@
 
 int		main()
 {
-	printf("meme%c", 'm');
-	ft_printf("meme%c", 'm');
+	printf("meme%c\n", 'a');
+	ft_printf("meme%c", 'a');
 	return (0);
 }
