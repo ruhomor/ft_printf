@@ -16,6 +16,8 @@ void	ft_printarg(va_list *lst, char type)
 {
 	if (type == 'c')
 		ft_putchar(va_arg(*lst, int));
+	if (type == 's')
+		ft_putstr(va_arg(*lst, char*));
 	if (type == 'd')
 		ft_putnbr(va_arg(*lst, int));
 }
