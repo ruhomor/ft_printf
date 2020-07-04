@@ -12,14 +12,27 @@
 
 #include "ft_printf.h"
 
+void	ft_sp_d(va_list *lst)
+{
+	ft_putnbr(va_arg(*lst, int));
+}
+
+void	ft_sp_u(va_list *lst)
+{
+	ft_putunbr(va_arg(*lst, unsigned int)); //TODO
+}
+
+void	ft_sp_c(va_list *lst)
+{
+	ft_putchar(va_arg(*lst, int));
+}
+
 void	ft_printarg(va_list *lst, char type)
 {
-	if (type == 'c')
-		ft_putchar(va_arg(*lst, int));
-	if (type == 's')
-		ft_putstr(va_arg(*lst, char*));
-	if (type == 'd')
-		ft_putnbr(va_arg(*lst, int));
+	if ((type == 'd') || (type == 'i'))
+		ft_sp_d(lst);
+	if (type == 'u')
+		ft_sp_u(lst);
 }
 
 void	ft_printf(char *c, ...)
