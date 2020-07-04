@@ -1,9 +1,11 @@
-#include "ft_printf.h"
+//#include "ft_printf.h"
 #include <stdio.h>
 
 int		main()
 {
-	printf("meme%u\n", 4294967297);
-	ft_printf("meme%u", 4294967297);
+	printf("meme%X\n", -8);
+	printf("meme%X\n", -1);
+	printf("meme%X\n", 1);
+	//ft_printf("meme%u", -2);
 	return (0);
 }

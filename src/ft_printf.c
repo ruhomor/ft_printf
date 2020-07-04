@@ -19,7 +19,22 @@ void	ft_sp_d(va_list *lst)
 
 void	ft_sp_u(va_list *lst)
 {
-	ft_putunbr(va_arg(*lst, unsigned int)); //TODO
+	ft_putunbr(va_arg(*lst, unsigned int));
+}
+
+void	ft_sp_o(va_list *lst)
+{
+	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 8)); //TODO TEST
+}
+
+void	ft_sp_x()
+{
+	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 16)); //TODO TEST
+}
+
+void	ft_sp_X()
+{
+	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 16)); //TODO TEST
 }
 
 void	ft_sp_c(va_list *lst)
