@@ -19,5 +19,12 @@
 
 void	ft_printf(char *c, ...);
 void	ft_printarg(va_list *lst, char type);
+void	ft_sp_d(va_list *lst);
+void	ft_sp_u(va_list *lst);
+void	ft_sp_o(va_list *lst);
+void	ft_sp_x(va_list *lst);
+void	ft_sp_X(va_list *lst);
+void	ft_sp_c(va_list *lst);
+void	ft_sp_perc(void);
 
 #endif

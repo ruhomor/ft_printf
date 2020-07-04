@@ -27,14 +27,14 @@ void	ft_sp_o(va_list *lst)
 	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 8)); //TODO TEST
 }
 
-void	ft_sp_x()
+void	ft_sp_x(va_list *lst)
 {
 	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 16)); //TODO TEST
 }
 
-void	ft_sp_X()
+void	ft_sp_X(va_list *lst)
 {
-	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 16)); //TODO TEST
+	ft_putstr(ft_strmap(ft_itoa_base(va_arg(*lst, unsigned int), 16), ft_toupper)); //TODO TEST
 }
 
 void	ft_sp_c(va_list *lst)
@@ -42,12 +42,37 @@ void	ft_sp_c(va_list *lst)
 	ft_putchar(va_arg(*lst, int));
 }
 
+void	ft_sp_perc(void)
+{
+	ft_putchar('%');
+}
+/*
+void	ft_sp_f(va_list *lst)
+{
+	ft_putstr(ft_ldtoa(va_arg(*lst, unsigned int))); //TODO TEST
+}
+
+void	ft_sp_F(va_list *lst)
+{
+	ft_putstr(ft_strmap(ft_ldtoa(va_arg(*lst, unsigned int)), ft_toupper)); //TODO TEST
+}
+*/
 void	ft_printarg(va_list *lst, char type)
 {
-	if ((type == 'd') || (type == 'i'))
-		ft_sp_d(lst);
-	if (type == 'u')
-		ft_sp_u(lst);
+	void		(*parg[8]) ();
+	const char	*blabs = "diouxXc%";//fF";
+
+	parg[0] = ft_sp_d;
+	parg[1] = ft_sp_d;
+	parg[2] = ft_sp_o;
+	parg[3] = ft_sp_u;
+	parg[4] = ft_sp_x;
+	parg[5] = ft_sp_X;
+	parg[6] = ft_sp_c;
+	parg[7] = ft_sp_perc;
+//	parg[8] = ft_sp_f;
+//	parg[9] = ft_sp_F;
+	parg[ft_strchr(blabs, type) - blabs](lst);
 }
 
 void	ft_printf(char *c, ...)
