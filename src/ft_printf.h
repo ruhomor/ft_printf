@@ -17,14 +17,21 @@
 # include <stdarg.h>
 # include "libft/libft.h"
 
+typedef struct	s_prnt
+{
+	va_list		*lst;
+	char		type;
+	char		hl;
+}				t_prnt;
+
 void	ft_printf(char *c, ...);
-void	ft_printarg(va_list *lst, char type);
-void	ft_sp_d(va_list *lst);
-void	ft_sp_u(va_list *lst);
-void	ft_sp_o(va_list *lst);
-void	ft_sp_x(va_list *lst);
-void	ft_sp_X(va_list *lst);
-void	ft_sp_c(va_list *lst);
+void	ft_printarg(t_prnt	info);
+void	ft_sp_d(t_prnt	info);
+void	ft_sp_u(t_prnt	info);
+void	ft_sp_o(t_prnt	info);
+void	ft_sp_x(t_prnt	info);
+void	ft_sp_X(t_prnt	info);
+void	ft_sp_c(t_prnt	info);
 void	ft_sp_perc(void);
 
 #endif
