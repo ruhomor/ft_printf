@@ -1,9 +1,9 @@
 #include "ft_printf.h"
 #include <stdio.h>
 
-int		main()
+int		main(void)
 {
-	printf("meme%s\n", "meme");
-	ft_printf("meme%s", "meme");
+	printf("meme %o %x %X %c %% emem\n", 8, 15, 15, 'T');
+	ft_printf("meme %o %x %X %c %% emem\n", 8, 15, 15, 'T');
 	return (0);
 }
