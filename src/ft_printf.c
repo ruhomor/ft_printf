@@ -88,7 +88,10 @@ void	ft_printf(char *c, ...)
 		if (*c != '%')
 			ft_putchar(*c);
 		else
+		{
+			c++;
 			ft_printarg(info);
+		}
 		c++;
 	}
 	va_end(lst);
