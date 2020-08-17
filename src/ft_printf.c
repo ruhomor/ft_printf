@@ -19,27 +19,27 @@ void	ft_sp_d(t_prnt info)
 
 void	ft_sp_u(t_prnt info)
 {
-	ft_putunbr(va_arg(*lst, unsigned int));
+	ft_putunbr(va_arg(*(info.lst), unsigned int));
 }
 
 void	ft_sp_o(t_prnt info)
 {
-	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 8)); //TODO TEST
+	ft_putstr(ft_itoa_base(va_arg(*(info.lst), unsigned int), 8)); //TODO TEST
 }
 
 void	ft_sp_x(t_prnt info)
 {
-	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 16)); //TODO TEST
+	ft_putstr(ft_itoa_base(va_arg(*(info.lst), unsigned int), 16)); //TODO TEST
 }
 
 void	ft_sp_X(t_prnt info)
 {
-	ft_putstr(ft_strmap(ft_itoa_base(va_arg(*lst, unsigned int), 16), ft_toupper)); //TODO TEST
+	ft_putstr(ft_strmap(ft_itoa_base(va_arg(*(info.lst), unsigned int), 16), ft_toupper)); //TODO TEST
 }
 
 void	ft_sp_c(t_prnt info)
 {
-	ft_putchar(va_arg(*lst, int));
+	ft_putchar(va_arg(*(info.lst), int));
 }
 
 void	ft_sp_perc(void)
@@ -49,12 +49,12 @@ void	ft_sp_perc(void)
 /*
 void	ft_sp_f(t_prnt info)
 {
-	ft_putstr(ft_ldtoa(va_arg(*lst, unsigned int))); //TODO TEST
+	ft_putstr(ft_ldtoa(va_arg(*(info.lst), unsigned int))); //TODO TEST
 }
 
 void	ft_sp_F(t_prnt info)
 {
-	ft_putstr(ft_strmap(ft_ldtoa(va_arg(*lst, unsigned int)), ft_toupper)); //TODO TEST
+	ft_putstr(ft_strmap(ft_ldtoa(va_arg(*(info.lst), unsigned int)), ft_toupper)); //TODO TEST
 }
 */
 void	ft_printarg(t_prnt info)
