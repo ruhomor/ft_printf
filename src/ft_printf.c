@@ -84,7 +84,7 @@ void	ft_printf(char *c, ...)
 	info.lst = &lst;
 	while (*c != '\0')
 	{
-		info.type = *c + 1; //TODO make this less stupid
+		info.type = *(c + 1); //TODO make this less stupid
 		if (*c != '%')
 			ft_putchar(*c);
 		else

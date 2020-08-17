@@ -31,6 +31,10 @@ test:
 	@make -C $(LIB)
 	@$(CC) -o test $(SRCS) $(INCL)
 
+retest:
+	@rm -f test
+	@make test
+
 all: $(NAME)
 
 %.o:%.c -I./
