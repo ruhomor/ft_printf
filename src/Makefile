@@ -29,7 +29,7 @@ LIB = ./libft
 
 test:
 	@make -C $(LIB)
-	@$(CC) -o $(NAME) $(SRCS) $(INCL)
+	@$(CC) -o test $(SRCS) $(INCL)
 
 all: $(NAME)
 
