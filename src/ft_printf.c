@@ -78,14 +78,17 @@ void	ft_printarg(t_prnt info)
 void	ft_printf(char *c, ...)
 {
 	va_list	lst;
+	t_prnt	info;
 
 	va_start(lst, c);
+	info.lst = &lst;
 	while (*c != '\0')
 	{
+		info.type = *c + 1; //TODO make this less stupid
 		if (*c != '%')
 			ft_putchar(*c);
 		else
-			ft_printarg(&lst, *++c);
+			ft_printarg(info);
 		c++;
 	}
 	va_end(lst);
