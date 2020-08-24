@@ -12,34 +12,34 @@
 
 #include "ft_printf.h"
 
-void	ft_sp_d(va_list *lst)
+void	ft_sp_d(t_prnt info)
 {
-	ft_putnbr(va_arg(*lst, int));
+	ft_putnbr(va_arg(*(info.lst), int));
 }
 
-void	ft_sp_u(va_list *lst)
+void	ft_sp_u(t_prnt info)
 {
-	ft_putunbr(va_arg(*lst, unsigned int));
+	ft_putunbr(va_arg(*(info.lst), unsigned int));
 }
 
-void	ft_sp_o(va_list *lst)
+void	ft_sp_o(t_prnt info)
 {
-	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 8)); //TODO TEST
+	ft_putstr(ft_itoa_base(va_arg(*(info.lst), unsigned int), 8)); //TODO TEST
 }
 
-void	ft_sp_x(va_list *lst)
+void	ft_sp_x(t_prnt info)
 {
-	ft_putstr(ft_itoa_base(va_arg(*lst, unsigned int), 16)); //TODO TEST
+	ft_putstr(ft_itoa_base(va_arg(*(info.lst), unsigned int), 16)); //TODO TEST
 }
 
-void	ft_sp_X(va_list *lst)
+void	ft_sp_X(t_prnt info)
 {
-	ft_putstr(ft_strmap(ft_itoa_base(va_arg(*lst, unsigned int), 16), ft_toupper)); //TODO TEST
+	ft_putstr(ft_strmap(ft_itoa_base(va_arg(*(info.lst), unsigned int), 16), ft_toupper)); //TODO TEST
 }
 
-void	ft_sp_c(va_list *lst)
+void	ft_sp_c(t_prnt info)
 {
-	ft_putchar(va_arg(*lst, int));
+	ft_putchar(va_arg(*(info.lst), int));
 }
 
 void	ft_sp_perc(void)
@@ -47,17 +47,17 @@ void	ft_sp_perc(void)
 	ft_putchar('%');
 }
 /*
-void	ft_sp_f(va_list *lst)
+void	ft_sp_f(t_prnt info)
 {
-	ft_putstr(ft_ldtoa(va_arg(*lst, unsigned int))); //TODO TEST
+	ft_putstr(ft_ldtoa(va_arg(*(info.lst), unsigned int))); //TODO TEST
 }
 
-void	ft_sp_F(va_list *lst)
+void	ft_sp_F(t_prnt info)
 {
-	ft_putstr(ft_strmap(ft_ldtoa(va_arg(*lst, unsigned int)), ft_toupper)); //TODO TEST
+	ft_putstr(ft_strmap(ft_ldtoa(va_arg(*(info.lst), unsigned int)), ft_toupper)); //TODO TEST
 }
 */
-void	ft_printarg(va_list *lst, char type)
+void	ft_printarg(t_prnt info)
 {
 	void		(*parg[8]) ();
 	const char	*blabs = "diouxXc%";//fF";
@@ -72,20 +72,26 @@ void	ft_printarg(va_list *lst, char type)
 	parg[7] = ft_sp_perc;
 //	parg[8] = ft_sp_f;
 //	parg[9] = ft_sp_F;
-	parg[ft_strchr(blabs, type) - blabs](lst);
+	parg[ft_strchr(blabs, info.type) - blabs](info);
 }
 
 void	ft_printf(char *c, ...)
 {
 	va_list	lst;
+	t_prnt	info;
 
 	va_start(lst, c);
+	info.lst = &lst;
 	while (*c != '\0')
 	{
+		info.type = *(c + 1); //TODO make this less stupid
 		if (*c != '%')
 			ft_putchar(*c);
 		else
-			ft_printarg(&lst, *++c);
+		{
+			c++;
+			ft_printarg(info);
+		}
 		c++;
 	}
 	va_end(lst);
