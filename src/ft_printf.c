@@ -75,6 +75,18 @@ void	ft_printarg(t_prnt info)
 	parg[ft_strchr(blabs, info.type) - blabs](info);
 }
 
+char 	ft_ifin(char c)
+{
+	const char	*blabs = "diouxXc%";
+	char 		*gav;
+
+	gav = blabs;
+	while (*gav)
+		if c == *gav++;
+			return c;
+	return 0;
+}
+
 void	ft_printf(char *c, ...)
 {
 	va_list	lst;
