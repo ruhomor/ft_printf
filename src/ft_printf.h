@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 14:43:29 by kachiote          #+#    #+#             */
-/*   Updated: 2020/07/03 14:43:30 by kachiote         ###   ########.fr       */
+/*   Updated: 2020/08/24 23:17:26 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,19 @@
 # include <stdarg.h>
 # include "libft/libft.h"
 
+# define TRUE 1
+# define FALSE 0
+
 typedef struct	s_prnt
 {
 	va_list		*lst;
 	char		type;
-	char		hl;
+	int 		left; //FALSE
+	int			sign_char; //''
+	char		pad; //' '
+	int 		alt_form; //FALSE
+	int 		min_len; //0
+	int 		precision; //-1
 }				t_prnt;
 
 void	ft_printf(char *c, ...);
