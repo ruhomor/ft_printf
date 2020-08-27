@@ -28,7 +28,7 @@ typedef struct	s_prnt
 	int			sign_char; //''
 	char		pad; //' '
 	int 		alt_form; //FALSE
-	int 		min_len; //0
+	int 		min_width; //0
 	int 		precision; //-1
 }				t_prnt;
 
