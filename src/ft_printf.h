@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 14:43:29 by kachiote          #+#    #+#             */
-/*   Updated: 2020/08/24 23:17:26 by sslift           ###   ########.fr       */
+/*   Updated: 2020/08/27 21:00:05 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@ typedef struct	s_prnt
 	int			sign_char; //''
 	char		pad; //' '
 	int 		alt_form; //FALSE
-	int 		min_len; //0
+	int 		min_width; //0
 	int 		precision; //-1
+	char		prefix; //''
+	int 		length; //0
+	int			pad_zero; //0
 }				t_prnt;
 
 void	ft_printf(char *c, ...);

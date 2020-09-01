@@ -22,17 +22,48 @@ int 	ft_ifin(char c, const char *s)
 
 void 	ft_size(t_prnt info, char *c)
 {
+    //TODO make it in future
 
+    while (ft_ifin(*c, "hl"))
+    {
+        c++;
+    }
+    ft_conversion(info, c);
 }
 
 void 	ft_precision(t_prnt info, char *c)
 {
+    int precision;
 
+    precision = -1;
+    if (*c == '.')
+    {
+        precision = 0;
+        c++;
+    }
+    while (ft_ifin(*c, "1234567890"))
+    {
+        precision *= 10;
+        precision += *c - '0';
+        c++;
+    }
+    info.precision = precision;
+    ft_size(info, c);
 }
 
 void 	ft_width(t_prnt info, char *c)
 {
+    int width;
 
+    width = 0;
+    while (ft_ifin(*c, "1234567890"))
+    {
+        width *= 10;
+        width += *c - '0';
+        c++;
+    }
+    info.min_width = width;
+    ft_precision(info, c);
 }
 
 void 	ft_flag(t_prnt info, char *c)
@@ -52,7 +83,6 @@ void 	ft_flag(t_prnt info, char *c)
 				info.sign_char = ' ';
 		c++;
 	}
-
 	ft_width(info, c);
 }
 
