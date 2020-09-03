@@ -17,39 +17,53 @@
 //	ft_putnbr(va_arg(*(info.lst), int));
 //}
 
-void	ft_sp_d(t_prnt info)
-{
-    int     num;
-    char    *numstr;
-    int     numlen;
-    char    *str;
-    char    *buf;
+void	ft_sp_d(t_prnt info) {
+    int num;
+    char *numstr;
+    int numlen;
+    char *str;
+    char *buf;
 
+    str = NULL;
     num = va_arg(*(info.lst), int);
-    numstr = ft_itoa(num);  //  allocs num
+    numstr = ft_itoa(num);  //  allocs numstr
     numlen = ft_strlen(numstr);
-    if (info.min_width > numlen + 1 * (info.sign_char != 0))
+    if (info.precision > (numlen - (num < 0)))
     {
-        str = ft_strnew(info.min_width - numlen);  //  allocs str
-        buf = str;
+        buf = numstr;
+        numstr = ft_strjoin(ft_strzeros(info.precision - (numlen - (num < 0))), numstr + (num < 0));
+        free(buf);
+        if ((num < 0) && (info.sign_char != '+'))
+        {
+            buf = numstr;
+            numstr = ft_strjoin("-", numstr);
+            free(buf);
+        }
     }
-    numlen = info.min_width - numlen - 1 * (info.sign_char != 0);
-    if (info.sign_char)  // TODO remake to work with left alignment
-        *buf++ = info.sign_char;
-    while (numlen--)  // TODO remake to work with left alignment
-        *buf++ = info.pad;
-    printf("|min_width-: %d| |left-: %d|", info.min_width, info.left);
+    numlen = ft_strlen(numstr);
+    if (info.min_width > numlen)
+    {
+        str = ft_strnew(info.min_width - numlen);
+        ft_memset(str, info.pad, info.min_width - numlen);
+    }
+    printf("|min_width-: %d| |left-: %d| |precision-: %d|", info.min_width, info.left, info.precision);
     if (info.left)
     {
         ft_putstr(numstr);
-        free(numstr);  //  frees num
-        ft_putstr(str);
-        free(str);  //  frees str
+        free(numstr);  //  frees numstr
+        if (str)
+        {
+            ft_putstr(str);
+            free(str);  //  frees str
+        }
     }
     else
     {
-        ft_putstr(str);
-        free(str);  //  frees str
+        if (str)
+        {
+            ft_putstr(str);
+            free(str);  //  frees str
+        }
         ft_putstr(numstr);
         free(numstr);  //  frees num
     }
