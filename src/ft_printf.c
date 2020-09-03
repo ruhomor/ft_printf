@@ -105,11 +105,6 @@ void	ft_sp_dox(t_prnt info)
     ft_print_pad(info, &str, &numstr);
 }
 
-void	ft_sp_u(t_prnt info)
-{
-	ft_putunbr(va_arg(*(info.lst), unsigned int));
-}
-
 void	ft_sp_c(t_prnt info)
 {
 	ft_putchar(va_arg(*(info.lst), int));
