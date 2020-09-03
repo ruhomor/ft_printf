@@ -144,7 +144,7 @@ void	ft_printf(char *c, ...)
 		else
 		{
 			c++;
-			ft_flag(info, c);
+			ft_flag(info, &c);
 			ft_prnt_init(&info);
 		}
 		c++;
