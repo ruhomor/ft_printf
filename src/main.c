@@ -3,7 +3,7 @@
 
 int		main(void)
 {
-	printf("meme %03d emem\n", 8);
-	ft_printf("meme %03d emem\n", 8);
+	printf("std_printf: meme %-3d emem\n", 8);
+	ft_printf("our_printf: meme %-3d emem\n", 8);
 	return (0);
 }

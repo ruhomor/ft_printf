@@ -26,19 +26,33 @@ void	ft_sp_d(t_prnt info)
     char    *buf;
 
     num = va_arg(*(info.lst), int);
-    numstr = ft_itoa(num);
+    numstr = ft_itoa(num);  //  allocs num
     numlen = ft_strlen(numstr);
-    if (info.min_width > numlen)
+    if (info.min_width > numlen + 1 * (info.sign_char != 0))
     {
-        str = ft_strnew(info.min_width - numlen);
+        str = ft_strnew(info.min_width - numlen);  //  allocs str
         buf = str;
     }
-    numlen = info.min_width - numlen;
-    while (numlen--)
+    numlen = info.min_width - numlen - 1 * (info.sign_char != 0);
+    if (info.sign_char)  // TODO remake to work with left alignment
+        *buf++ = info.sign_char;
+    while (numlen--)  // TODO remake to work with left alignment
         *buf++ = info.pad;
-    ft_putstr(str);
-    free(str);
-    ft_putstr(numstr);
+    printf("|min_width-: %d| |left-: %d|", info.min_width, info.left);
+    if (info.left)
+    {
+        ft_putstr(str);
+        free(str);  //  frees str
+        ft_putstr(numstr);
+        free(numstr);  //  frees num
+    }
+    else
+    {
+        ft_putstr(numstr);
+        free(numstr);  //  frees num
+        ft_putstr(str);
+        free(str);  //  frees str
+    }
 }
 
 void	ft_sp_u(t_prnt info)
@@ -99,13 +113,29 @@ void	ft_printarg(t_prnt info)
 	parg[ft_strchr(blabs, info.type) - blabs](info);
 }
 
+void    ft_prnt_init(t_prnt *info)
+{
+    info->sign_char = '\0';
+    info->min_width = 0;
+    info->pad = ' ';
+    info->alt_form = 0;
+    info->left = 0;
+    info->length = 0;
+    info->pad_zero = 0;
+    info->precision = -1;
+    info->prefix = '\0';
+    info->type = 0;
+}
+
 void	ft_printf(char *c, ...)
 {
 	va_list	lst;
 	t_prnt	info;
+	char    *tmp;
 
 	va_start(lst, c);
 	info.lst = &lst;
+	ft_prnt_init(&info);
 	while (*c != '\0')
 	{
 		info.type = *(c + 1); //TODO make this less stupid
@@ -115,7 +145,7 @@ void	ft_printf(char *c, ...)
 		{
 			c++;
 			ft_flag(info, c);
-			c = *info.c;
+			ft_prnt_init(&info);
 		}
 		c++;
 	}

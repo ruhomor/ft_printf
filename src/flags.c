@@ -28,7 +28,6 @@ void 	ft_size(t_prnt info, char *c)
     {
         c++;
     }
-    *info.c = c;
     ft_conversion(info, c);
 }
 
