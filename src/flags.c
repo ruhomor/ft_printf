@@ -69,7 +69,7 @@ void 	ft_width(t_prnt info, char **c)
 void 	ft_flag(t_prnt info, char **c)
 {
     info.pad = ' '; // TODO check if thats ok???
-	while (ft_ifin(*c, "#+-0 "))
+	while (ft_ifin(**c, "#+-0 "))
 	{
 		if (**c == '-')
 			info.left = TRUE;
