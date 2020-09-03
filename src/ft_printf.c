@@ -41,17 +41,17 @@ void	ft_sp_d(t_prnt info)
     printf("|min_width-: %d| |left-: %d|", info.min_width, info.left);
     if (info.left)
     {
-        ft_putstr(str);
-        free(str);  //  frees str
         ft_putstr(numstr);
         free(numstr);  //  frees num
+        ft_putstr(str);
+        free(str);  //  frees str
     }
     else
     {
-        ft_putstr(numstr);
-        free(numstr);  //  frees num
         ft_putstr(str);
         free(str);  //  frees str
+        ft_putstr(numstr);
+        free(numstr);  //  frees num
     }
 }
 
