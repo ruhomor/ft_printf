@@ -11,84 +11,103 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>  //  TODO REMOVE
 
-//void	ft_sp_d(t_prnt info)
-//{
-//	ft_putnbr(va_arg(*(info.lst), int));
-//}
+char	ft_toupperchar(char c)
+{
+    if (ft_islowercase(c))
+        return (c - 32);
+    return (c);
+}
 
-void	ft_sp_d(t_prnt info) {
-    int num;
-    char *numstr;
-    int numlen;
-    char *str;
+size_t     ft_converse(t_prnt info, int num, char **numstr)
+{
     char *buf;
 
-    if (info.precision == -1)
-        info.pad = ' ';
-    str = NULL;
-    num = va_arg(*(info.lst), int);
-    numstr = ft_itoa(num);  //  allocs numstr
-    numlen = ft_strlen(numstr);
-    if (info.precision > (numlen - (num < 0)))
+    if (ft_ifin(info.type, "idu"))
+        *numstr = ft_itoa(num);  //  allocs numstr
+    else if (info.type == 'o')
+        *numstr = ft_itoa_base(num, 8);
+    else if (info.type == 'x')
+        *numstr = ft_itoa_base(num, 16);
+    else if (info.type == 'X')
+    {
+        *numstr = ft_strmap(buf = ft_itoa_base(num, 16), ft_toupperchar);
+        free(buf);
+    }
+    return ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0);
+}
+
+char    *ft_precise(t_prnt info, int num) {
+    char    *numstr;
+    char    *buf;
+    size_t  numlen;
+
+    numlen = ft_converse(info, num, &numstr);
+    if (info.precision > (numlen))
     {
         buf = numstr;
-        numstr = ft_strjoin(ft_strzeros(info.precision - (numlen - (num < 0))), numstr + (num < 0));
+        numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + (num < 0) * ft_ifin(info.type, "id"));
         free(buf);
-        if ((num < 0) && (info.sign_char != '+'))
+        if ((num < 0) * ft_ifin(info.type, "id") && (info.sign_char != '+'))
         {
             buf = numstr;
             numstr = ft_strjoin("-", numstr);
             free(buf);
         }
     }
+    return numstr;
+}
+
+void    ft_print_pad(t_prnt info, char **str, char **numstr)
+{
+    if (info.left)
+    {
+        ft_putstr(*numstr);
+        free(*numstr);  //  frees numstr
+        if (*str)
+        {
+            ft_putstr(*str);
+            free(*str);  //  frees str
+        }
+    }
+    else
+    {
+        if (*str)
+        {
+            ft_putstr(*str);
+            free(*str);  //  frees str
+        }
+        ft_putstr(*numstr);
+        free(*numstr);  //  frees num
+    }
+}
+
+void	ft_sp_dox(t_prnt info)
+{
+    char *numstr;
+    int numlen;
+    char *str;
+
+    if (info.precision != -1)
+        info.pad = ' ';
+    str = NULL;
+    if (info.type == 'u')
+        numstr = ft_precise(info, va_arg(*(info.lst), unsigned int));
+    else
+        numstr = ft_precise(info, va_arg( *(info.lst), int));
     numlen = ft_strlen(numstr);
     if (info.min_width > numlen)
     {
         str = ft_strnew(info.min_width - numlen);
         ft_memset(str, info.pad, info.min_width - numlen);
     }
-    printf("|min_width-: %d| |left-: %d| |precision-: %d|", info.min_width, info.left, info.precision);
-    if (info.left)
-    {
-        ft_putstr(numstr);
-        free(numstr);  //  frees numstr
-        if (str)
-        {
-            ft_putstr(str);
-            free(str);  //  frees str
-        }
-    }
-    else
-    {
-        if (str)
-        {
-            ft_putstr(str);
-            free(str);  //  frees str
-        }
-        ft_putstr(numstr);
-        free(numstr);  //  frees num
-    }
+    ft_print_pad(info, &str, &numstr);
 }
 
 void	ft_sp_u(t_prnt info)
 {
 	ft_putunbr(va_arg(*(info.lst), unsigned int));
-}
-
-void	ft_sp_o(t_prnt info)
-{
-	ft_putstr(ft_itoa_base(va_arg(*(info.lst), unsigned int), 8)); //TODO TEST
-}
-
-void	ft_sp_x(t_prnt info)
-{
-	ft_putstr(ft_itoa_base(va_arg(*(info.lst), unsigned int), 16)); //TODO TEST
-}
-
-void	ft_sp_X(t_prnt info)
-{
-	ft_putstr(ft_strmap(ft_itoa_base(va_arg(*(info.lst), unsigned int), 16), ft_toupper)); //TODO TEST
 }
 
 void	ft_sp_c(t_prnt info)
@@ -116,12 +135,12 @@ void	ft_printarg(t_prnt info)
 	void		(*parg[8]) ();
 	const char	*blabs = "diouxXc%";//fF";
 
-	parg[0] = ft_sp_d;
-	parg[1] = ft_sp_d;
-	parg[2] = ft_sp_o;
-	parg[3] = ft_sp_u;
-	parg[4] = ft_sp_x;
-	parg[5] = ft_sp_X;
+	parg[0] = ft_sp_dox;
+	parg[1] = ft_sp_dox;
+	parg[2] = ft_sp_dox;
+	parg[3] = ft_sp_dox;
+	parg[4] = ft_sp_dox;
+	parg[5] = ft_sp_dox;
 	parg[6] = ft_sp_c;
 	parg[7] = ft_sp_perc;
 //	parg[8] = ft_sp_f;
