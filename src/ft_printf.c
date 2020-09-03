@@ -24,6 +24,8 @@ void	ft_sp_d(t_prnt info) {
     char *str;
     char *buf;
 
+    if (info.precision == -1)
+        info.pad = ' ';
     str = NULL;
     num = va_arg(*(info.lst), int);
     numstr = ft_itoa(num);  //  allocs numstr
