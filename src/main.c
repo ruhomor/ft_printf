@@ -3,7 +3,7 @@
 
 int		main(void)
 {
-	printf("meme %o %x %X %c %% emem\n", 8, 15, 15, 'T');
-	ft_printf("meme %o %x %X %c %% emem\n", 8, 15, 15, 'T');
+	printf("emem %05.4d meme\n", 10);
+	ft_printf("emem %05.4d meme\n", 10);
 	return (0);
 }

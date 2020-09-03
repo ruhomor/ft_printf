@@ -33,6 +33,7 @@ typedef struct	s_prnt
 	char		prefix; //''
 	int 		length; //0
 	int			pad_zero; //0
+	char        *c; //string pointer
 }				t_prnt;
 
 void	ft_printf(char *c, ...);

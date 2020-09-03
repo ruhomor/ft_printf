@@ -12,9 +12,63 @@
 
 #include "ft_printf.h"
 
-void	ft_sp_d(t_prnt info)
-{
-	ft_putnbr(va_arg(*(info.lst), int));
+//void	ft_sp_d(t_prnt info)
+//{
+//	ft_putnbr(va_arg(*(info.lst), int));
+//}
+
+void	ft_sp_d(t_prnt info) {
+    int num;
+    char *numstr;
+    int numlen;
+    char *str;
+    char *buf;
+
+    if (info.precision == -1)
+        info.pad = ' ';
+    str = NULL;
+    num = va_arg(*(info.lst), int);
+    numstr = ft_itoa(num);  //  allocs numstr
+    numlen = ft_strlen(numstr);
+    if (info.precision > (numlen - (num < 0)))
+    {
+        buf = numstr;
+        numstr = ft_strjoin(ft_strzeros(info.precision - (numlen - (num < 0))), numstr + (num < 0));
+        free(buf);
+        if ((num < 0) && (info.sign_char != '+'))
+        {
+            buf = numstr;
+            numstr = ft_strjoin("-", numstr);
+            free(buf);
+        }
+    }
+    numlen = ft_strlen(numstr);
+    if (info.min_width > numlen)
+    {
+        str = ft_strnew(info.min_width - numlen);
+        ft_memset(str, info.pad, info.min_width - numlen);
+    }
+    printf("|min_width-: %d| |left-: %d| |precision-: %d|", info.min_width, info.left, info.precision);
+    if (info.left)
+    {
+        ft_putstr(numstr);
+        free(numstr);  //  frees numstr
+        if (str)
+        {
+            ft_putstr(str);
+            free(str);  //  frees str
+        }
+    }
+    else
+    {
+        if (str)
+        {
+            ft_putstr(str);
+            free(str);  //  frees str
+        }
+        ft_putstr(numstr);
+        free(numstr);  //  frees num
+    }
 }
 
 void	ft_sp_u(t_prnt info)
@@ -75,13 +129,29 @@ void	ft_printarg(t_prnt info)
 	parg[ft_strchr(blabs, info.type) - blabs](info);
 }
 
+void    ft_prnt_init(t_prnt *info)
+{
+    info->sign_char = '\0';
+    info->min_width = 0;
+    info->pad = ' ';
+    info->alt_form = 0;
+    info->left = 0;
+    info->length = 0;
+    info->pad_zero = 0;
+    info->precision = -1;
+    info->prefix = '\0';
+    info->type = 0;
+}
+
 void	ft_printf(char *c, ...)
 {
 	va_list	lst;
 	t_prnt	info;
+	char    *tmp;
 
 	va_start(lst, c);
 	info.lst = &lst;
+	ft_prnt_init(&info);
 	while (*c != '\0')
 	{
 		info.type = *(c + 1); //TODO make this less stupid
@@ -90,7 +160,8 @@ void	ft_printf(char *c, ...)
 		else
 		{
 			c++;
-			ft_printarg(info);
+			ft_flag(info, &c);
+			ft_prnt_init(&info);
 		}
 		c++;
 	}
