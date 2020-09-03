@@ -12,9 +12,33 @@
 
 #include "ft_printf.h"
 
+//void	ft_sp_d(t_prnt info)
+//{
+//	ft_putnbr(va_arg(*(info.lst), int));
+//}
+
 void	ft_sp_d(t_prnt info)
 {
-	ft_putnbr(va_arg(*(info.lst), int));
+    int     num;
+    char    *numstr;
+    int     numlen;
+    char    *str;
+    char    *buf;
+
+    num = va_arg(*(info.lst), int);
+    numstr = ft_itoa(num);
+    numlen = ft_strlen(numstr);
+    if (info.min_width > numlen)
+    {
+        str = ft_strnew(info.min_width - numlen);
+        buf = str;
+    }
+    numlen = info.min_width - numlen;
+    while (numlen--)
+        *buf++ = info.pad;
+    ft_putstr(str);
+    free(str);
+    ft_putstr(numstr);
 }
 
 void	ft_sp_u(t_prnt info)
@@ -90,7 +114,8 @@ void	ft_printf(char *c, ...)
 		else
 		{
 			c++;
-			ft_printarg(info);
+			ft_flag(info, c);
+			c = *info.c;
 		}
 		c++;
 	}

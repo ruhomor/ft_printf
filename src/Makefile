@@ -15,6 +15,8 @@ CC = gcc
 NAME = ft_printf
 
 CFILES = ft_printf \
+		flags \
+		conversions \
 		main
 
 SRCS = $(patsubst %, %.c, $(CFILES))
