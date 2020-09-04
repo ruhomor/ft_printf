@@ -57,13 +57,15 @@ void       ft_based(t_prnt info, char **numstr, int num)
         *numstr = ft_strmap(buf = ft_itoa_base(num, 16), ft_toupperchar);
         free(buf);
     }
+    else if (info.type == 'u')
+        *numstr = ft_itoa_base(num, 10);
 }
 
 size_t     ft_converse(t_prnt info, int num, char **numstr)
 {
     char *buf;
 
-    if (ft_ifin(info.type, "idu"))
+    if (ft_ifin(info.type, "id"))
         *numstr = ft_itoa(num);  //  allocs numstr
     else
         ft_based(info, numstr, num);
