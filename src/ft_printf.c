@@ -184,6 +184,49 @@ void	ft_sp_perc(void)
 {
 	ft_putchar('%');
 }
+
+void    ft_sp_s(t_prnt info)
+{
+    char    *numstr;
+    int     numlen;
+    char    *str;
+    char    *buf;
+
+    str = 0;
+    if (info.precision != -1)
+        info.pad = ' ';
+    if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
+        info.pad = ' ';
+    numstr = va_arg(*(info.lst), char *);  //  does it allocs - MALLOCS??????
+    numlen = ft_strlen(numstr);
+    if (numlen > info.precision)
+    {
+        if (info.precision == -1)
+            ft_strncpy(buf = ft_strnew(info.precision), numstr, numlen);
+        else
+            ft_strncpy(buf = ft_strnew(info.precision), numstr, info.precision);
+        //free(numstr);
+        numstr = buf;
+        numlen = info.precision;
+    }
+    if (numlen < info.min_width)
+    {
+        str = ft_strnew(info.min_width - numlen);
+        ft_memset(str, info.pad, info.min_width - numlen);
+    }
+    if (info.left == 1)
+    {
+        ft_putstr(numstr);
+        if (str)
+            ft_putstr(str);
+    }
+    else
+    {
+        if (str)
+            ft_putstr(str);
+        ft_putstr(numstr);
+    }
+}
 /*
 void	ft_sp_f(t_prnt info)
 {
@@ -197,8 +240,8 @@ void	ft_sp_F(t_prnt info)
 */
 void	ft_printarg(t_prnt info)
 {
-	void		(*parg[8]) ();
-	const char	*blabs = "diouxXc%";//fF";
+	void		(*parg[11]) ();
+	const char	*blabs = "diouxXc%fFs";//fF";
 
 	parg[0] = ft_sp_doxc;
 	parg[1] = ft_sp_doxc;
@@ -210,6 +253,7 @@ void	ft_printarg(t_prnt info)
 	parg[7] = ft_sp_perc;
 //	parg[8] = ft_sp_f;
 //	parg[9] = ft_sp_F;
+    parg[10] = ft_sp_s;
 	parg[ft_strchr(blabs, info.type) - blabs](info);
 }
 
