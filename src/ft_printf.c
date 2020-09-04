@@ -71,7 +71,7 @@ size_t     ft_converse(t_prnt info, int num, char **numstr)
 {
     char	*buf;
 
-    if (ft_ifin(info.type, "id"))
+    if (ft_ifin(info.type, "idu"))
 	{
 		if ((info.precision == 0) && (num == 0))
 			*numstr = ft_strnew(0);
