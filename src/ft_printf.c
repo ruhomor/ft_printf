@@ -195,13 +195,21 @@ void    ft_sp_s(t_prnt info)
     int     numlen;
     char    *str;
     char    *buf;
+	int		clear;
 
     str = 0;
-    if (info.precision != -1)
-        info.pad = ' ';
+	clear = FALSE;
+    //if (info.precision != -1)
+    //    info.pad = ' ';
     if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
         info.pad = ' ';
+	printf("|info.pad=[%c]|", info.pad);
     numstr = va_arg(*(info.lst), char *);  //  does it allocs - MALLOCS??????
+	if (!(numstr))
+	{
+		numstr = ft_strdup("(null)");
+		clear = TRUE;
+	}
     numlen = ft_strlen(numstr);
     if ((info.precision != -1) && (numlen > info.precision))
     {
@@ -219,14 +227,22 @@ void    ft_sp_s(t_prnt info)
     {
         ft_putstr(numstr);
         if (str)
+		{
             ft_putstr(str);
+			free(str);
+		}
     }
     else
     {
         if (str)
+		{
             ft_putstr(str);
+			free(str);
+		}
         ft_putstr(numstr);
     }
+	if (clear)
+		free(numstr);
 }
 
 void	ft_sp_f(t_prnt info)
