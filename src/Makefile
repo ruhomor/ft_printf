@@ -17,6 +17,7 @@ NAME = ft_printf
 CFILES = ft_printf \
 		flags \
 		conversions \
+		ft_ftoa \
 		main
 
 SRCS = $(patsubst %, %.c, $(CFILES))
@@ -25,7 +26,7 @@ OUT = $(patsubst %, %.o, $(CFILES))
 
 INCL = libft/libft.a
 
-FLAGS = -Werror -Wall -Wextra
+FLAGS =
 
 LIB = ./libft
 
