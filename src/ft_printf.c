@@ -96,6 +96,12 @@ void    ft_formnsign(t_prnt info, char **numstr, int num)
         *numstr = ft_strjoin("-", *numstr);
         free(buf);
     }
+	if ((num > 0) * ft_ifin(info.type, "id") && (info.sign_char == '+'))
+	{
+        buf = *numstr;
+        *numstr = ft_strjoin("+", *numstr);
+        free(buf);
+	}
     if (info.alt_form == 1)
     {
         if (info.type == 'x')
