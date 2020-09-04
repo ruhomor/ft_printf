@@ -179,6 +179,26 @@ void    ft_print_pad(t_prnt info, char **str, char **numstr)
     }
 }
 
+void	ft_manageminus(t_prnt info, char **str, char **numstr)
+{
+	char	*buf;
+	char	*ddel;
+	
+	if ((*str) && (**str == '0') && (*numstr) && (**numstr == '-'))
+	{
+		ddel = *str;
+		buf = ft_strdup("-");
+		ft_strcat(buf, *str);
+		*str = buf;
+		free(ddel);
+		ddel = *numstr;
+		buf = ft_strnew(0);
+		ft_strcat(buf, *numstr + 1);
+		*numstr = buf;
+		free(ddel);
+	}
+}
+
 void	ft_sp_doxc(t_prnt info)
 {
     char    *numstr;
@@ -205,6 +225,7 @@ void	ft_sp_doxc(t_prnt info)
         str = ft_strnew(info.min_width - numlen);
         ft_memset(str, info.pad, info.min_width - numlen);
     }
+	ft_manageminus(info, &str, &numstr);
     ft_print_pad(info, &str, &numstr);
 }
 
