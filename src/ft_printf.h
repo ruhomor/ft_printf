@@ -38,13 +38,13 @@ typedef struct	s_prnt
 
 void	ft_printf(char *c, ...);
 void	ft_printarg(t_prnt	info);
-void	ft_sp_d(t_prnt	info);
+void	ft_sp_dox(t_prnt	info);
 void	ft_sp_u(t_prnt	info);
-void	ft_sp_o(t_prnt	info);
-void	ft_sp_x(t_prnt	info);
-void	ft_sp_X(t_prnt	info);
 void	ft_sp_c(t_prnt	info);
 void	ft_sp_perc(void);
 char    *ft_ftoa(double n, int precision);
+int 	ft_ifin(char c, const char *s);
+void	ft_conversion(t_prnt info, char **c);
+void 	ft_flag(t_prnt info, char **c);
 
 #endif
