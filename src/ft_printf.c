@@ -199,12 +199,9 @@ void    ft_sp_s(t_prnt info)
         info.pad = ' ';
     numstr = va_arg(*(info.lst), char *);  //  does it allocs - MALLOCS??????
     numlen = ft_strlen(numstr);
-    if (numlen > info.precision)
+    if ((info.precision != -1) && (numlen > info.precision))
     {
-        if (info.precision == -1)
-            ft_strncpy(buf = ft_strnew(info.precision), numstr, numlen);
-        else
-            ft_strncpy(buf = ft_strnew(info.precision), numstr, info.precision);
+        ft_strncpy(buf = ft_strnew(info.precision), numstr, info.precision);
         //free(numstr);
         numstr = buf;
         numlen = info.precision;
