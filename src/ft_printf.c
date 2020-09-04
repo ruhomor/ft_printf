@@ -44,7 +44,13 @@ void       ft_handle_h(t_prnt info, char **numstr)
     }
 }
 
-void       ft_based(t_prnt info, char **numstr, int num)
+void        ft_chars(t_prnt info, char **numstr, int num)
+{
+    *numstr = ft_strnew(1 * sizeof(char));
+    **numstr = (char)num;
+}
+
+void        ft_based(t_prnt info, char **numstr, int num)
 {
     char    *buf;
 
@@ -67,8 +73,10 @@ size_t     ft_converse(t_prnt info, int num, char **numstr)
 
     if (ft_ifin(info.type, "id"))
         *numstr = ft_itoa(num);  //  allocs numstr
-    else
+    else if (ft_ifin(info.type, "ouxX"))
         ft_based(info, numstr, num);
+    else if (info.type == 'c')
+        ft_chars(info, numstr, num);
     if (info.alt_form == 1)
         ft_handle_h(info, numstr);
     return ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
@@ -148,13 +156,15 @@ void    ft_print_pad(t_prnt info, char **str, char **numstr)
     }
 }
 
-void	ft_sp_dox(t_prnt info)
+void	ft_sp_doxc(t_prnt info)
 {
-    char *numstr;
-    int numlen;
-    char *str;
+    char    *numstr;
+    int     numlen;
+    char    *str;
 
     if (info.precision != -1)
+        info.pad = ' ';
+    if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
         info.pad = ' ';
     str = NULL;
     if (info.type == 'u')
@@ -168,11 +178,6 @@ void	ft_sp_dox(t_prnt info)
         ft_memset(str, info.pad, info.min_width - numlen);
     }
     ft_print_pad(info, &str, &numstr);
-}
-
-void	ft_sp_c(t_prnt info)
-{
-	ft_putchar(va_arg(*(info.lst), int));
 }
 
 void	ft_sp_perc(void)
@@ -195,13 +200,13 @@ void	ft_printarg(t_prnt info)
 	void		(*parg[8]) ();
 	const char	*blabs = "diouxXc%";//fF";
 
-	parg[0] = ft_sp_dox;
-	parg[1] = ft_sp_dox;
-	parg[2] = ft_sp_dox;
-	parg[3] = ft_sp_dox;
-	parg[4] = ft_sp_dox;
-	parg[5] = ft_sp_dox;
-	parg[6] = ft_sp_c;
+	parg[0] = ft_sp_doxc;
+	parg[1] = ft_sp_doxc;
+	parg[2] = ft_sp_doxc;
+	parg[3] = ft_sp_doxc;
+	parg[4] = ft_sp_doxc;
+	parg[5] = ft_sp_doxc;
+	parg[6] = ft_sp_doxc;
 	parg[7] = ft_sp_perc;
 //	parg[8] = ft_sp_f;
 //	parg[9] = ft_sp_F;
