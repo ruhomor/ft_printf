@@ -3,7 +3,7 @@
 
 int		main(void)
 {
-	printf("original: emem %-10.1s meme\n", "abc");
-	ft_printf("myprintf: emem %-10.1s meme\n", "abc");
+	printf("original: emem %-2.1f meme\n", 98.76);
+	ft_printf("myprintf: emem %-2.1f meme\n", 98.76);
 	return (0);
 }

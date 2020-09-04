@@ -52,7 +52,7 @@ char    *ft_ftoa(double n, int precision)
         n = -n;
     }
     pr = precision;
-    f = .4;
+    f = .5;
     while (0 < pr--)
         f /= 10;
     n += f;

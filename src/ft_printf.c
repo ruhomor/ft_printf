@@ -224,17 +224,36 @@ void    ft_sp_s(t_prnt info)
         ft_putstr(numstr);
     }
 }
-/*
+
 void	ft_sp_f(t_prnt info)
 {
-	ft_putstr(ft_ldtoa(va_arg(*(info.lst), unsigned int))); //TODO TEST
+    char    *numstr;
+    int     numlen;
+    char    *str;
+    char    *buf;
+
+    str = NULL;
+    numstr = ft_ftoa(va_arg(*(info.lst), double), info.precision);
+    numlen = ft_strlen(numstr);
+    if (numlen < info.min_width)
+    {
+        str = ft_strnew(info.min_width - numlen);
+        ft_memset(str, info.pad, info.min_width - numlen);
+    }
+    if (info.left == 1)
+    {
+        ft_putstr(numstr);
+        if (str)
+            ft_putstr(str);
+    }
+    else
+    {
+        if (str)
+            ft_putstr(str);
+        ft_putstr(numstr);
+    }
 }
 
-void	ft_sp_F(t_prnt info)
-{
-	ft_putstr(ft_strmap(ft_ldtoa(va_arg(*(info.lst), unsigned int)), ft_toupper)); //TODO TEST
-}
-*/
 void	ft_printarg(t_prnt info)
 {
 	void		(*parg[11]) ();
@@ -248,8 +267,8 @@ void	ft_printarg(t_prnt info)
 	parg[5] = ft_sp_doxc;
 	parg[6] = ft_sp_doxc;
 	parg[7] = ft_sp_perc;
-//	parg[8] = ft_sp_f;
-//	parg[9] = ft_sp_F;
+	parg[8] = ft_sp_f;
+	parg[9] = ft_sp_f;
     parg[10] = ft_sp_s;
 	parg[ft_strchr(blabs, info.type) - blabs](info);
 }
