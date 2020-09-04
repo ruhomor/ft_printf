@@ -203,7 +203,6 @@ void    ft_sp_s(t_prnt info)
     //    info.pad = ' ';
     if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
         info.pad = ' ';
-	printf("|info.pad=[%c]|", info.pad);
     numstr = va_arg(*(info.lst), char *);  //  does it allocs - MALLOCS??????
 	if (!(numstr))
 	{
