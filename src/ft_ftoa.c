@@ -58,20 +58,14 @@ char    *ft_ftoa(double n, int precision)
     n += f;
     u = (int)n;
     f = n - u;
-//    if (precision <= 0 && ft_round_below_one(f))
-//        u++; //TODO check переполнение
-    printf("debug %d %f\n", u, f);
     ft_strcat(res, ft_itoa(u));
     if (precision > 0)
         ft_strcat(res, ".");
     while (0 < precision--)
     {
         f *= 10;
-        printf("f=%f\n", f);
         u = (int)f;
-        printf("u=%u\n", u);
         f -= u;
-        printf("debug %d %f pr=%d\n", u, f, precision);
         ft_strcat(res, ft_itoa(u));
     }
     return res;
