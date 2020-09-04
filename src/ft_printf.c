@@ -71,13 +71,11 @@ size_t     ft_converse(t_prnt info, int num, char **numstr)
 {
     char	*buf;
 
-    if (ft_ifin(info.type, "idu"))
-	{
-		if ((info.precision == 0) && (num == 0))
-			*numstr = ft_strnew(0);
-		else
-			*numstr = ft_itoa(num);  //  allocs numstr
-	}
+    //if (ft_ifin(info.type, "idu"))
+    if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
+		*numstr = ft_strnew(0);
+	else if (ft_ifin(info.type, "id"))
+		*numstr = ft_itoa(num);  //  allocs numstr
     else if (ft_ifin(info.type, "ouxX"))
         ft_based(info, numstr, num);
     else if (info.type == 'c')

@@ -3,9 +3,11 @@
 
 int		main(void)
 {
-	printf("original: emem %#02o meme\n", 2);
-	ft_printf("myprintf: emem %#02o meme\n", 2);
-	printf("original: emem %#2o meme\n", 3);
-	ft_printf("myprintf: emem %#2o meme\n", 3);
+	printf("original: emem %#o meme\n", 0);
+	ft_printf("myprintf: emem %#o meme\n", 0);
+	printf("original: emem %#.o meme\n", 0);
+	ft_printf("myprintf: emem %#.o meme\n", 0);
+	printf("original: emem %.o meme\n", 0);
+	ft_printf("myprintf: emem %.o meme\n", 0);
 	return (0);
 }
