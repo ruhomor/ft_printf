@@ -2,3 +2,4 @@ cmake-build-debug
 CMakeLists.txt
 .idea
 test
+.DS_Store
