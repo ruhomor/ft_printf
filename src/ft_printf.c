@@ -126,7 +126,7 @@ char    *ft_precise(t_prnt info, int num)
     int     numlen;
 
     numlen = ft_converse(info, num, &numstr);
-    if (info.precision > (numlen))
+    if ((info.precision > (numlen)) && (!(info.type == 'c')))
     {
         buf = numstr;
         numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + (num < 0) * ft_ifin(info.type, "id") + (info.alt_form == 1) * (2 * (ft_ifin(info.type, "xX")) + (info.type == 'o')));
@@ -173,8 +173,13 @@ void	ft_sp_doxc(t_prnt info)
     str = NULL;
     if (info.type == 'u')
         numstr = ft_precise(info, va_arg(*(info.lst), unsigned int));
-    else
-        numstr = ft_precise(info, va_arg( *(info.lst), int));
+    else if (info.type == '%')
+	{
+		info.type = 'c';
+		numstr = ft_precise(info, '%');
+	}
+	else
+        numstr = ft_precise(info, va_arg(*(info.lst), int));
     numlen = ft_strlen(numstr) + (info.type == 'c') * (*numstr == '\0');
     if (info.min_width > numlen)
     {
@@ -285,7 +290,7 @@ void	ft_printarg(t_prnt info)
 	parg[4] = ft_sp_doxc;
 	parg[5] = ft_sp_doxc;
 	parg[6] = ft_sp_doxc;
-	parg[7] = ft_sp_perc;
+	parg[7] = ft_sp_doxc;
 	parg[8] = ft_sp_f;
 	parg[9] = ft_sp_f;
     parg[10] = ft_sp_s;
