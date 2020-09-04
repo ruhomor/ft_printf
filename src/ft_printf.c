@@ -20,13 +20,35 @@ char	ft_toupperchar(char c)
     return (c);
 }
 
-size_t     ft_converse(t_prnt info, int num, char **numstr)
+void       ft_handle_h(t_prnt info, char **numstr)
 {
-    char *buf;
+    char    *buf;
 
-    if (ft_ifin(info.type, "idu"))
-        *numstr = ft_itoa(num);  //  allocs numstr
-    else if (info.type == 'o')
+    if (info.type == 'o')
+    {
+        buf = *numstr;
+        *numstr = ft_strjoin("0", *numstr);
+        free(buf);
+    }
+    else if (info.type == 'x')
+    {
+        buf = *numstr;
+        *numstr = ft_strjoin("0x", *numstr);
+        free(buf);
+    }
+    else if (info.type == 'X')
+    {
+        buf = *numstr;
+        *numstr = ft_strjoin("0X", *numstr);
+        free(buf);
+    }
+}
+
+void       ft_based(t_prnt info, char **numstr, int num)
+{
+    char    *buf;
+
+    if (info.type == 'o')
         *numstr = ft_itoa_base(num, 8);
     else if (info.type == 'x')
         *numstr = ft_itoa_base(num, 16);
@@ -35,26 +57,67 @@ size_t     ft_converse(t_prnt info, int num, char **numstr)
         *numstr = ft_strmap(buf = ft_itoa_base(num, 16), ft_toupperchar);
         free(buf);
     }
-    return ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0);
+}
+
+size_t     ft_converse(t_prnt info, int num, char **numstr)
+{
+    char *buf;
+
+    if (ft_ifin(info.type, "idu"))
+        *numstr = ft_itoa(num);  //  allocs numstr
+    else
+        ft_based(info, numstr, num);
+    if (info.alt_form == 1)
+        ft_handle_h(info, numstr);
+    return ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
+    - (info.alt_form) * (2 * ft_ifin(info.type, "xX") + (info.type == 'o'));
+}
+
+void    ft_formnsign(t_prnt info, char **numstr, int num)
+{
+    char *buf;
+
+    if ((num < 0) * ft_ifin(info.type, "id") && (info.sign_char != '+'))
+    {
+        buf = *numstr;
+        *numstr = ft_strjoin("-", *numstr);
+        free(buf);
+    }
+    if (info.alt_form == 1)
+    {
+        if (info.type == 'x')
+        {
+            buf = *numstr;
+            *numstr = ft_strjoin("0x", *numstr);
+            free(buf);
+        }
+        if (info.type == 'X')
+        {
+            buf = *numstr;
+            *numstr = ft_strjoin("0X", *numstr);
+            free(buf);
+        }
+        else if (info.type == 'o')
+        {
+            buf = *numstr;
+            *numstr = ft_strjoin("0", *numstr);
+            free(buf);
+        }
+    }
 }
 
 char    *ft_precise(t_prnt info, int num) {
     char    *numstr;
     char    *buf;
-    size_t  numlen;
+    int     numlen;
 
     numlen = ft_converse(info, num, &numstr);
     if (info.precision > (numlen))
     {
         buf = numstr;
-        numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + (num < 0) * ft_ifin(info.type, "id"));
+        numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + (num < 0) * ft_ifin(info.type, "id") + (info.alt_form == 1) * (2 * (ft_ifin(info.type, "xX")) + (info.type == 'o')));
         free(buf);
-        if ((num < 0) * ft_ifin(info.type, "id") && (info.sign_char != '+'))
-        {
-            buf = numstr;
-            numstr = ft_strjoin("-", numstr);
-            free(buf);
-        }
+        ft_formnsign(info, &numstr, num);
     }
     return numstr;
 }
