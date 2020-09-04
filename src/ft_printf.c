@@ -108,7 +108,7 @@ void    ft_formnsign(t_prnt info, char **numstr, int num)
 {
     char *buf;
 
-    if ((num < 0) * ft_ifin(info.type, "id") && (info.sign_char != '+'))
+    if ((num < 0) * ft_ifin(info.type, "id"))
     {
         buf = *numstr;
         *numstr = ft_strjoin("-", *numstr);
