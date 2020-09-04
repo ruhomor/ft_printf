@@ -133,7 +133,7 @@ void    ft_formnsign(t_prnt info, char **numstr, int num)
             *numstr = ft_strjoin("0X", *numstr);
             free(buf);
         }
-        else if (info.type == 'o')
+        else if ((info.type == 'o') && (**numstr != '0'))
         {
             buf = *numstr;
             *numstr = ft_strjoin("0", *numstr);
