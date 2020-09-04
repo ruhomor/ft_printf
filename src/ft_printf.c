@@ -20,28 +20,31 @@ char	ft_toupperchar(char c)
     return (c);
 }
 
-void       ft_handle_h(t_prnt info, char **numstr)
+void       ft_handle_h(t_prnt info, char **numstr, int num)
 {
     char    *buf;
 
-    if (info.type == 'o')
-    {
-        buf = *numstr;
-        *numstr = ft_strjoin("0", *numstr);
-        free(buf);
-    }
-    else if (info.type == 'x')
-    {
-        buf = *numstr;
-        *numstr = ft_strjoin("0x", *numstr);
-        free(buf);
-    }
-    else if (info.type == 'X')
-    {
-        buf = *numstr;
-        *numstr = ft_strjoin("0X", *numstr);
-        free(buf);
-    }
+	if (!(num == 0))
+	{
+		if (info.type == 'o')
+		{
+			buf = *numstr;
+			*numstr = ft_strjoin("0", *numstr);
+			free(buf);
+		}
+		else if (info.type == 'x')
+		{
+			buf = *numstr;
+			*numstr = ft_strjoin("0x", *numstr);
+			free(buf);
+		}
+		else if (info.type == 'X')
+		{
+		    buf = *numstr;
+		    *numstr = ft_strjoin("0X", *numstr);
+			free(buf);
+			}
+	}
 }
 
 void        ft_chars(t_prnt info, char **numstr, int num)
@@ -84,7 +87,7 @@ size_t     ft_converse(t_prnt info, int num, char **numstr)
 		return 1;
 	}
     if (info.alt_form == 1)
-        ft_handle_h(info, numstr);
+        ft_handle_h(info, numstr, num);
     return ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
     - (info.alt_form) * (2 * ft_ifin(info.type, "xX") + (info.type == 'o'));
 }
@@ -117,7 +120,7 @@ void    ft_formnsign(t_prnt info, char **numstr, int num)
         *numstr = ft_strjoin("-", *numstr);
         free(buf);
 	}
-    if (info.alt_form == 1)
+    if ((info.alt_form == 1) && (num != 0))
     {
         if (info.type == 'x')
         {
