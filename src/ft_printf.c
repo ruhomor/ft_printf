@@ -86,6 +86,18 @@ size_t     ft_converse(t_prnt info, int num, char **numstr)
     - (info.alt_form) * (2 * ft_ifin(info.type, "xX") + (info.type == 'o'));
 }
 
+void	ft_manageplus(t_prnt info, char **numstr, int num)
+{
+    char *buf;
+
+	if ((num > 0) * ft_ifin(info.type, "id") && (info.sign_char == '+'))
+	{
+        buf = *numstr;
+        *numstr = ft_strjoin("+", *numstr);
+        free(buf);
+	}
+}
+
 void    ft_formnsign(t_prnt info, char **numstr, int num)
 {
     char *buf;
@@ -94,12 +106,6 @@ void    ft_formnsign(t_prnt info, char **numstr, int num)
     {
         buf = *numstr;
         *numstr = ft_strjoin("-", *numstr);
-        free(buf);
-    }
-	if ((num > 0) * ft_ifin(info.type, "id") && (info.sign_char == '+'))
-	{
-        buf = *numstr;
-        *numstr = ft_strjoin("+", *numstr);
         free(buf);
 	}
     if (info.alt_form == 1)
@@ -139,6 +145,7 @@ char    *ft_precise(t_prnt info, int num)
         free(buf);
         ft_formnsign(info, &numstr, num);
     }
+	ft_manageplus(info, &numstr, num);
     return numstr;
 }
 
