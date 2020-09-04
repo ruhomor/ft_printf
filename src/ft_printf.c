@@ -96,6 +96,12 @@ void	ft_manageplus(t_prnt info, char **numstr, int num)
         *numstr = ft_strjoin("+", *numstr);
         free(buf);
 	}
+	if (info.sign_char == ' ')
+	{
+        buf = *numstr;
+        *numstr = ft_strjoin(" ", *numstr);
+        free(buf);
+	}
 }
 
 void    ft_formnsign(t_prnt info, char **numstr, int num)
