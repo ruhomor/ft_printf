@@ -69,10 +69,15 @@ void        ft_based(t_prnt info, char **numstr, int num)
 
 size_t     ft_converse(t_prnt info, int num, char **numstr)
 {
-    char *buf;
+    char	*buf;
 
     if (ft_ifin(info.type, "id"))
-        *numstr = ft_itoa(num);  //  allocs numstr
+	{
+		if ((info.precision == 0) && (num == 0))
+			*numstr = ft_strnew(0);
+		else
+			*numstr = ft_itoa(num);  //  allocs numstr
+	}
     else if (ft_ifin(info.type, "ouxX"))
         ft_based(info, numstr, num);
     else if (info.type == 'c')
