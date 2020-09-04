@@ -76,7 +76,10 @@ size_t     ft_converse(t_prnt info, int num, char **numstr)
     else if (ft_ifin(info.type, "ouxX"))
         ft_based(info, numstr, num);
     else if (info.type == 'c')
+	{
         ft_chars(info, numstr, num);
+		return 1;
+	}
     if (info.alt_form == 1)
         ft_handle_h(info, numstr);
     return ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
@@ -116,7 +119,8 @@ void    ft_formnsign(t_prnt info, char **numstr, int num)
     }
 }
 
-char    *ft_precise(t_prnt info, int num) {
+char    *ft_precise(t_prnt info, int num)
+{
     char    *numstr;
     char    *buf;
     int     numlen;
@@ -171,7 +175,7 @@ void	ft_sp_doxc(t_prnt info)
         numstr = ft_precise(info, va_arg(*(info.lst), unsigned int));
     else
         numstr = ft_precise(info, va_arg( *(info.lst), int));
-    numlen = ft_strlen(numstr);
+    numlen = ft_strlen(numstr) + (info.type == 'c') * (*numstr == '\0');
     if (info.min_width > numlen)
     {
         str = ft_strnew(info.min_width - numlen);
