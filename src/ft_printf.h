@@ -45,5 +45,6 @@ void	ft_sp_x(t_prnt	info);
 void	ft_sp_X(t_prnt	info);
 void	ft_sp_c(t_prnt	info);
 void	ft_sp_perc(void);
+char    *ft_ftoa(double n, int precision);
 
 #endif
