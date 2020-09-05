@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 14:43:29 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/04 23:19:18 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/05 21:22:15 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct	s_prnt
 	int 		length; //0
 	int			pad_zero; //0
 	char        *c; //string pointer
-	char *		size;
+	int			size; //-1
 }				t_prnt;
 
 void	ft_printf(char *c, ...);
