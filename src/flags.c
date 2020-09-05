@@ -6,7 +6,7 @@
 /*   By: sslift <sslift@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 22:31:50 by sslift            #+#    #+#             */
-/*   Updated: 2020/08/24 23:09:02 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/05 21:26:38 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,39 @@ int 	ft_ifin(char c, const char *s)
 
 void 	ft_size(t_prnt info, char **c)
 {
-    //TODO make it in future
+    char *size;
 
     while (ft_ifin(**c, "hlL"))
     {
-        (*c)++;
+    	if (**c == 'h')
+		{
+			(*c)++;
+			if (**c == 'h')
+			{
+				size = ft_strdup("hh");
+				(*c)++;
+			}
+			else
+				size = ft_strdup("h");
+		}
+		else if (**c == 'l')
+		{
+			(*c)++;
+			if (**c == 'l')
+			{
+				size = ft_strdup("ll");
+				(*c)++;
+			}
+			else
+				size = ft_strdup("l");
+		}
+		else if (**c == 'L')
+		{
+			(*c)++;
+			size = ft_strdup("L");
+		}
     }
+    info.size = size;
     ft_conversion(info, c);
 }
 
