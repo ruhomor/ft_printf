@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ftoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/04 19:08:16 by kachiote          #+#    #+#             */
+/*   Updated: 2020/09/04 23:19:18 by sslift           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 #include <stdio.h>
 
@@ -34,13 +46,13 @@
 //    return x - u.f;
 //}
 
-char    *ft_ftoa(double n, int precision)
+char    *ft_ftoa(long double n, int precision)
 {
     char *res;
     int u;
     //TODO change from int to uint_64
     //unsigned long long u;
-    double f;
+    long double f;
     int pr;
 
     if (precision < 0)
@@ -52,7 +64,7 @@ char    *ft_ftoa(double n, int precision)
         n = -n;
     }
     pr = precision;
-    f = .4;
+    f = .5;
     while (0 < pr--)
         f /= 10;
     n += f;

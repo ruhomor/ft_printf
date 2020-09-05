@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 14:43:29 by kachiote          #+#    #+#             */
-/*   Updated: 2020/08/27 21:00:05 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/04 23:19:18 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_sp_dox(t_prnt	info);
 void	ft_sp_u(t_prnt	info);
 void	ft_sp_c(t_prnt	info);
 void	ft_sp_perc(void);
-char    *ft_ftoa(double n, int precision);
+char    *ft_ftoa(long double n, int precision);
 int 	ft_ifin(char c, const char *s);
 void	ft_conversion(t_prnt info, char **c);
 void 	ft_flag(t_prnt info, char **c);

@@ -24,7 +24,7 @@ void 	ft_size(t_prnt info, char **c)
 {
     //TODO make it in future
 
-    while (ft_ifin(**c, "hl"))
+    while (ft_ifin(**c, "hlL"))
     {
         (*c)++;
     }
