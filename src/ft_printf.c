@@ -112,7 +112,7 @@ void		ft_manageplus(t_prnt info, char **numstr, int num)
 
 void		ft_formnsign(t_prnt info, char **numstr, int num)
 {
-    char	*buf;
+	char	*buf;
 
 	if ((num < 0) * ft_ifin(info.type, "id"))
 	{
@@ -121,68 +121,70 @@ void		ft_formnsign(t_prnt info, char **numstr, int num)
 		free(buf);
 	}
 	if ((info.alt_form == 1) && (num != 0))
-    {
-        if (info.type == 'x')
-        {
-            buf = *numstr;
-            *numstr = ft_strjoin("0x", *numstr);
-            free(buf);
-        }
-        if (info.type == 'X')
-        {
-            buf = *numstr;
-            *numstr = ft_strjoin("0X", *numstr);
-            free(buf);
-        }
-        else if ((info.type == 'o') && (**numstr != '0') && (**numstr != '\0'))
-        {
-            buf = *numstr;
-            *numstr = ft_strjoin("0", *numstr);
-            free(buf);
-        }
-    }
+	{
+		if (info.type == 'x')
+		{
+			buf = *numstr;
+			*numstr = ft_strjoin("0x", *numstr);
+			free(buf);
+		}
+		if (info.type == 'X')
+		{
+			buf = *numstr;
+			*numstr = ft_strjoin("0X", *numstr);
+			free(buf);
+		}
+		else if ((info.type == 'o') && (**numstr != '0') && (**numstr != '\0'))
+		{
+			buf = *numstr;
+			*numstr = ft_strjoin("0", *numstr);
+			free(buf);
+		}
+	}
 }
 
-char    *ft_precise(t_prnt info, int num)
+char		*ft_precise(t_prnt info, int num)
 {
-    char    *numstr;
-    char    *buf;
-    int     numlen;
+	char	*numstr;
+	char	*buf;
+	int		numlen;
 
-    numlen = ft_converse(info, num, &numstr);
-    if ((info.precision > (numlen)) && (!(info.type == 'c')))
-    {
-        buf = numstr;
-        numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + (num < 0) * ft_ifin(info.type, "id") + (info.alt_form == 1) * (2 * (ft_ifin(info.type, "xX")) + (info.type == 'o')));
-        free(buf);
-        ft_formnsign(info, &numstr, num);
-    }
+	numlen = ft_converse(info, num, &numstr);
+	if ((info.precision > (numlen)) && (!(info.type == 'c')))
+	{
+		buf = numstr;
+		numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr +
+				(num < 0) * ft_ifin(info.type, "id") + (info.alt_form == 1) *
+				(2 * (ft_ifin(info.type, "xX")) + (info.type == 'o')));
+		free(buf);
+		ft_formnsign(info, &numstr, num);
+	}
 	ft_manageplus(info, &numstr, num);
-    return numstr;
+	return (numstr);
 }
 
-void    ft_print_pad(t_prnt info, char **str, char **numstr)
+void	ft_print_pad(t_prnt info, char **str, char **numstr)
 {
-    if (info.left)
-    {
-        ft_putstr(*numstr);
-        free(*numstr);  //  frees numstr
-        if (*str)
-        {
-            ft_putstr(*str);
-            free(*str);  //  frees str
-        }
-    }
-    else
-    {
-        if (*str)
-        {
-            ft_putstr(*str);
-            free(*str);  //  frees str
-        }
-        ft_putstr(*numstr);
-        free(*numstr);  //  frees num
-    }
+	if (info.left)
+	{
+		ft_putstr(*numstr);
+		free(*numstr);  //  frees numstr
+		if (*str)
+		{
+			ft_putstr(*str);
+			free(*str);  //  frees str
+		}
+	}
+	else
+	{
+		if (*str)
+		{
+			ft_putstr(*str);
+			free(*str);  //  frees str
+		}
+		ft_putstr(*numstr);
+		free(*numstr);  //  frees num
+	}
 }
 
 void	ft_manageminus(t_prnt info, char **str, char **numstr)
@@ -205,34 +207,34 @@ void	ft_manageminus(t_prnt info, char **str, char **numstr)
 	}
 }
 
-void	ft_sp_doxc(t_prnt info)
+void		ft_sp_doxc(t_prnt info)
 {
-    char    *numstr;
-    int     numlen;
-    char    *str;
+	char	*numstr;
+	int		numlen;
+	char	*str;
 
-    if (info.precision != -1)
-        info.pad = ' ';
-    if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
-        info.pad = ' ';
-    str = NULL;
-    if (info.type == 'u')
-        numstr = ft_precise(info, va_arg(*(info.lst), unsigned int));
-    else if (info.type == '%')
+	if (info.precision != -1)
+		info.pad = ' ';
+	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
+		info.pad = ' ';
+	str = NULL;
+	if (info.type == 'u')
+		numstr = ft_precise(info, va_arg(*(info.lst), unsigned int));
+	else if (info.type == '%')
 	{
 		info.type = 'c';
 		numstr = ft_precise(info, '%');
 	}
 	else
-        numstr = ft_precise(info, va_arg(*(info.lst), int));
-    numlen = ft_strlen(numstr) + (info.type == 'c') * (*numstr == '\0');
-    if (info.min_width > numlen)
-    {
-        str = ft_strnew(info.min_width - numlen);
-        ft_memset(str, info.pad, info.min_width - numlen);
-    }
+		numstr = ft_precise(info, va_arg(*(info.lst), int));
+	numlen = ft_strlen(numstr) + (info.type == 'c') * (*numstr == '\0');
+	if (info.min_width > numlen)
+	{
+		str = ft_strnew(info.min_width - numlen);
+		ft_memset(str, info.pad, info.min_width - numlen);
+	}
 	ft_manageminus(info, &str, &numstr);
-    ft_print_pad(info, &str, &numstr);
+	ft_print_pad(info, &str, &numstr);
 }
 
 void	ft_sp_perc(void)
@@ -240,12 +242,12 @@ void	ft_sp_perc(void)
 	ft_putchar('%');
 }
 
-void    ft_sp_s(t_prnt info)
+void		ft_sp_s(t_prnt info)
 {
-    char    *numstr;
-    int     numlen;
-    char    *str;
-    char    *buf;
+	char	*numstr;
+	int		numlen;
+	char	*str;
+	char	*buf;
 	int		clear;
 
 	str = 0;
