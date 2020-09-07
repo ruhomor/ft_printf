@@ -20,7 +20,7 @@ int 	ft_ifin(char c, const char *s)
 	return FALSE;
 }
 
-void 	ft_size(t_prnt info, char **c)
+int 	ft_size(t_prnt info, char **c)
 {
 	int size;
 
@@ -56,10 +56,10 @@ void 	ft_size(t_prnt info, char **c)
 		}
     }
     info.size = size;
-    ft_conversion(info, c);
+    return (ft_conversion(info, c));
 }
 
-void 	ft_precision(t_prnt info, char **c)
+int 	ft_precision(t_prnt info, char **c)
 {
     int precision;
 
@@ -76,10 +76,10 @@ void 	ft_precision(t_prnt info, char **c)
         (*c)++;
     }
     info.precision = precision;
-    ft_size(info, c);
+    return (ft_size(info, c));
 }
 
-void 	ft_width(t_prnt info, char **c)
+int 	ft_width(t_prnt info, char **c)
 {
     int width;
 
@@ -91,10 +91,10 @@ void 	ft_width(t_prnt info, char **c)
         (*c)++;
     }
     info.min_width = width;
-    ft_precision(info, c);
+    return (ft_precision(info, c));
 }
 
-void 	ft_flag(t_prnt info, char **c)
+int 	ft_flag(t_prnt info, char **c)
 {
 	while (ft_ifin(**c, "#+-0 "))
 	{
@@ -111,6 +111,6 @@ void 	ft_flag(t_prnt info, char **c)
 				info.sign_char = ' ';
         (*c)++;
 	}
-	ft_width(info, c);
+	return (ft_width(info, c));
 }
 

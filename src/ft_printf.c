@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/05 01:12:58 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/08 01:53:56 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char		ft_toupperchar(char c)
 	return (c);
 }
 
-void		ft_handle_h(t_prnt info, char **numstr, long long int num)
+int		ft_handle_h(t_prnt info, char **numstr, long long int num)
 {
 	char	*buf;
 
@@ -31,18 +31,21 @@ void		ft_handle_h(t_prnt info, char **numstr, long long int num)
 			buf = *numstr;
 			*numstr = ft_strjoin("0", *numstr);
 			free(buf);
+			return (1);
 		}
 		else if (info.type == 'x')
 		{
 			buf = *numstr;
 			*numstr = ft_strjoin("0x", *numstr);
 			free(buf);
+			return (2);
 		}
 		else if (info.type == 'X')
 		{
 			buf = *numstr;
 			*numstr = ft_strjoin("0X", *numstr);
 			free(buf);
+			return (2);
 		}
 	}
 }
@@ -177,6 +180,8 @@ void		ft_based(t_prnt info, char **numstr, long long int num)
 			*numstr = ft_itoa_baseh(num, 8);
 		else if (info.size == 2)
 			*numstr = ft_itoa_basehh(num, 8);
+		else if (info.size == -1)
+			*numstr = ft_itoa_base(num, 8);
 		else
 			*numstr = ft_itoa_basel(num, 8);
 	}
@@ -186,6 +191,8 @@ void		ft_based(t_prnt info, char **numstr, long long int num)
 			*numstr = ft_itoa_baseh(num, 16);
 		else if (info.size == 2)
 			*numstr = ft_itoa_basehh(num, 16);
+		else if (info.size == -1)
+			*numstr = ft_itoa_base(num, 16);
 		else
 			*numstr = ft_itoa_basel(num, 16);
 	}
@@ -195,6 +202,8 @@ void		ft_based(t_prnt info, char **numstr, long long int num)
 			buf = ft_itoa_baseh(num, 16);
 		else if (info.size == 2)
 			buf = ft_itoa_basehh(num, 16);
+		else if (info.size == -1)
+			buf = ft_itoa_base(num, 16);
 		else
 			buf = ft_itoa_basel(num, 16);
 		*numstr = ft_strmap(buf, ft_toupperchar);
@@ -261,6 +270,7 @@ char		*ft_itoal(long long int n)
 
 size_t		ft_converse(t_prnt info, long long int num, char **numstr)
 {
+	size_t	len;
     //if (ft_ifin(info.type, "idu"))
 	if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
 		*numstr = ft_strnew(0);
@@ -273,11 +283,15 @@ size_t		ft_converse(t_prnt info, long long int num, char **numstr)
 		ft_chars(info, numstr, num);
 		return (1);
 	}
-	if (info.alt_form == 1)
-		ft_handle_h(info, numstr, num);
-	return (ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
-			- (info.alt_form) * (2 * ft_ifin(info.type, "xX") * (num != 0)
-				+ (info.type == 'o')));
+	len = ft_strlen(*numstr);
+	//if ((info.alt_form == 1) && (num != 0)) //why (num != 0) ?
+		//len -= ft_handle_h(info, numstr, num);
+	if (ft_ifin(info.type, "id") && (num < 0))
+		len -= 1;
+	return (len);
+	//return (ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
+	//		- (info.alt_form) * ((2 * ft_ifin(info.type, "xX")
+	//			+ (info.type == 'o')))* (num != 0));
 }
 
 void		ft_manageplus(t_prnt info, char **numstr, long long int num)
@@ -322,7 +336,7 @@ void		ft_formnsign(t_prnt info, char **numstr, long long int num)
 			*numstr = ft_strjoin("0X", *numstr);
 			free(buf);
 		}
-		else if ((info.type == 'o') && (**numstr != '0') && (**numstr != '\0'))
+		else if ((info.type == 'o') && (**numstr != '0') && (**numstr != '\0')) //add 0 for octal condition
 		{
 			buf = *numstr;
 			*numstr = ft_strjoin("0", *numstr);
@@ -336,14 +350,20 @@ char		*ft_precise(t_prnt info, long long int num)
 	char	*numstr;
 	char	*buf;
 	int		numlen;
+	int 	shift;
 
+	shift = 0;
 	numlen = ft_converse(info, num, &numstr);
 	if ((info.precision > (numlen)) && (!(info.type == 'c')))
 	{
 		buf = numstr;
-		numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr +
-				(num < 0) * ft_ifin(info.type, "id") + (info.alt_form == 1) *
-				(2 * (ft_ifin(info.type, "xX")) + (info.type == 'o')));
+		if (ft_ifin(info.type, "id") && (num < 0)) // add - for decimal condition
+			shift += 1;
+		if (ft_ifin(info.type, "xX") && (info.alt_form == 1)) // add 0x for hex condition
+			shift += 2;
+		if ((info.type == 'o') && (info.alt_form == 1)) // add 0 for octal condition
+			shift += 1;
+		numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + shift);
 		free(buf);
 		ft_formnsign(info, &numstr, num);
 	}
@@ -351,15 +371,17 @@ char		*ft_precise(t_prnt info, long long int num)
 	return (numstr);
 }
 
-void	ft_print_pad(t_prnt info, char **str, char **numstr)
+int	ft_print_pad(t_prnt info, char **str, char **numstr)
 {
 	if (info.left)
 	{
 		ft_putstr(*numstr);
+		info.len += ft_strlen(*numstr);
 		free(*numstr);  //  frees numstr
 		if (*str)
 		{
 			ft_putstr(*str);
+			info.len += ft_strlen(*str);
 			free(*str);  //  frees str
 		}
 	}
@@ -368,11 +390,14 @@ void	ft_print_pad(t_prnt info, char **str, char **numstr)
 		if (*str)
 		{
 			ft_putstr(*str);
+			info.len += ft_strlen(*str);
 			free(*str);  //  frees str
 		}
 		ft_putstr(*numstr);
+		info.len += ft_strlen(*numstr);
 		free(*numstr);  //  frees num
 	}
+	return (info.len);
 }
 
 void	ft_manageminus(t_prnt info, char **str, char **numstr)
@@ -433,7 +458,7 @@ char		*read_arg(t_prnt info)
 	return (numstr);
 }
 
-void		ft_sp_doxc(t_prnt info)
+int		ft_sp_doxc(t_prnt info)
 {
 	char	*numstr;
 	int		numlen;
@@ -452,15 +477,11 @@ void		ft_sp_doxc(t_prnt info)
 		ft_memset(str, info.pad, info.min_width - numlen);
 	}
 	ft_manageminus(info, &str, &numstr);
-	ft_print_pad(info, &str, &numstr);
+	info.len = ft_print_pad(info, &str, &numstr);
+	return (info.len);
 }
 
-void	ft_sp_perc(void)
-{
-	ft_putchar('%');
-}
-
-void		ft_sp_s(t_prnt info)
+int		ft_sp_s(t_prnt info)
 {
 	char	*numstr;
 	int		numlen;
@@ -499,6 +520,7 @@ void		ft_sp_s(t_prnt info)
 		if (str)
 		{
 			ft_putstr(str);
+			info.len += ft_strlen(str);
 			free(str);
 		}
 	}
@@ -507,22 +529,30 @@ void		ft_sp_s(t_prnt info)
 		if (str)
 		{
 			ft_putstr(str);
+			info.len += ft_strlen(str);
 			free(str);
 		}
 		ft_putstr(numstr);
 	}
 	if (clear)
+	{
+		info.len += ft_strlen(numstr);
 		free(numstr);
+	}
+	return (info.len);
 }
 
-void			ft_sp_f(t_prnt info)
+int			ft_sp_f(t_prnt info)
 {
 	char		*numstr;
 	int			numlen;
 	char		*str;
 
 	str = NULL;
-	numstr = ft_ftoa(va_arg(*(info.lst), double), info.precision);
+	if (info.size == 5)
+		numstr = ft_ftoa(va_arg(*(info.lst), long double), info.precision);
+	else
+		numstr = ft_ftoa(va_arg(*(info.lst), double), info.precision);
 	numlen = ft_strlen(numstr);
 	if (numlen < info.min_width)
 	{
@@ -533,21 +563,37 @@ void			ft_sp_f(t_prnt info)
 	{
 		ft_putstr(numstr);
 		if (str)
+		{
 			ft_putstr(str);
+			info.len += ft_strlen(str);
+			free(str);
+		}
 	}
 	else
 	{
 		if (str)
+		{
 			ft_putstr(str);
+			info.len += ft_strlen(str);
+			free(str);
+		}
 		ft_putstr(numstr);
 	}
+	info.len += ft_strlen(numstr);
+	free(numstr);
+	return (info.len);
 }
 
-void			ft_printarg(t_prnt info)
+int			ft_printarg(t_prnt info)
 {
-	void		(*parg[11]) ();
+	int		(*parg[11]) ();
 	const char	*blabs = "diouxXc%fFs";//fF";
 
+	if (!ft_ifin(info.type, blabs))
+	{
+		ft_putchar(info.type);
+		return (1);
+	}
 	parg[0] = ft_sp_doxc;
 	parg[1] = ft_sp_doxc;
 	parg[2] = ft_sp_doxc;
@@ -559,7 +605,7 @@ void			ft_printarg(t_prnt info)
 	parg[8] = ft_sp_f;
 	parg[9] = ft_sp_f;
 	parg[10] = ft_sp_s;
-	parg[ft_strchr(blabs, info.type) - blabs](info);
+	return (parg[ft_strchr(blabs, info.type) - blabs](info));
 }
 
 void			ft_prnt_init(t_prnt *info)
@@ -573,29 +619,34 @@ void			ft_prnt_init(t_prnt *info)
 	info->pad_zero = 0;
 	info->precision = -1;
 	info->prefix = '\0';
+	info->len = 0;
 	info->type = 0;
 }
 
-void			ft_printf(char *c, ...)
+int			ft_printf(char *c, ...)
 {
 	va_list		lst;
 	t_prnt		info;
+	int 		res;
 
+	res = 0;
 	va_start(lst, c);
 	info.lst = &lst;
 	ft_prnt_init(&info);
 	while (*c != '\0')
 	{
-		info.type = *(c + 1); //TODO make this less stupid
 		if (*c != '%')
+		{
 			ft_putchar(*c);
+			res++;
+		}
 		else
 		{
 			c++;
-			ft_flag(info, &c);
-			ft_prnt_init(&info);
+			res += ft_flag(info, &c);
 		}
 		c++;
 	}
 	va_end(lst);
+	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 14:43:29 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/05 21:22:15 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/08 00:46:41 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ typedef struct	s_prnt
 	int 		length; //0
 	int			pad_zero; //0
 	char        *c; //string pointer
+	int 		len;
 	int			size; //-1
 }				t_prnt;
 
-void	ft_printf(char *c, ...);
-void	ft_printarg(t_prnt	info);
-void	ft_sp_dox(t_prnt	info);
-void	ft_sp_u(t_prnt	info);
-void	ft_sp_c(t_prnt	info);
-void	ft_sp_perc(void);
+int	ft_printf(char *c, ...);
+int	ft_printarg(t_prnt	info);
+int	ft_sp_doxc(t_prnt	info);
+int	ft_sp_u(t_prnt	info);
+int	ft_sp_c(t_prnt	info);
 char    *ft_ftoa(long double n, int precision);
 int 	ft_ifin(char c, const char *s);
-void	ft_conversion(t_prnt info, char **c);
-void 	ft_flag(t_prnt info, char **c);
+int	ft_conversion(t_prnt info, char **c);
+int 	ft_flag(t_prnt info, char **c);
 
 #endif

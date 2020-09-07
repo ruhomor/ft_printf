@@ -6,7 +6,7 @@
 #    By: kachiote <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/03 14:53:22 by kachiote          #+#    #+#              #
-#    Updated: 2020/09/04 23:19:18 by sslift           ###   ########.fr        #
+#    Updated: 2020/09/07 23:48:57 by sslift           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ CFILES = ft_printf \
 		flags \
 		conversions \
 		ft_ftoa \
-		main
+		printf_new_debug
+		#main
 
 SRCS = $(patsubst %, %.c, $(CFILES))
 

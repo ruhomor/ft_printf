@@ -12,8 +12,8 @@
 
 #include "ft_printf.h"
 
-void	ft_conversion(t_prnt info, char **c)
+int	ft_conversion(t_prnt info, char **c)
 {
 	info.type = **c;
-	ft_printarg(info);
+	return (ft_printarg(info));
 }
