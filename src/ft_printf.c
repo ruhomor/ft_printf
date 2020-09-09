@@ -316,7 +316,7 @@ void		ft_formnsign(t_prnt info, char **numstr, long long int num)
 {
 	char	*buf;
 
-	if ((num < 0) * ft_ifin(info.type, "id"))
+	if ((num < 0) * ft_ifin(info.type, "id")) //add - for decimal condition
 	{
 		buf = *numstr;
 		*numstr = ft_strjoin("-", *numstr);
@@ -324,13 +324,13 @@ void		ft_formnsign(t_prnt info, char **numstr, long long int num)
 	}
 	if ((info.alt_form == 1) && (num != 0))
 	{
-		if (info.type == 'x')
+		if (info.type == 'x') //add 0x for hexa condition
 		{
 			buf = *numstr;
 			*numstr = ft_strjoin("0x", *numstr);
 			free(buf);
 		}
-		if (info.type == 'X')
+		if (info.type == 'X')  //add 0X for hexa condition
 		{
 			buf = *numstr;
 			*numstr = ft_strjoin("0X", *numstr);
@@ -359,9 +359,9 @@ char		*ft_precise(t_prnt info, long long int num)
 		buf = numstr;
 		if (ft_ifin(info.type, "id") && (num < 0)) // add - for decimal condition
 			shift += 1;
-		if (ft_ifin(info.type, "xX") && (info.alt_form == 1)) // add 0x for hex condition
+		if (ft_ifin(info.type, "xX") && (info.alt_form == 1) && (num != 0)) // add 0x for hex condition
 			shift += 2;
-		if ((info.type == 'o') && (info.alt_form == 1)) // add 0 for octal condition
+		if ((info.type == 'o') && (info.alt_form == 1) && (num != 0) && (**numstr != '0') && (**numstr != '\0')) // add 0 for octal condition
 			shift += 1;
 		numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + shift);
 		free(buf);
