@@ -18,8 +18,8 @@ CFILES = ft_printf \
 		flags \
 		conversions \
 		ft_ftoa \
-		printf_new_debug
-		#main
+		main
+		#printf_new_debug
 
 SRCS = $(patsubst %, %.c, $(CFILES))
 

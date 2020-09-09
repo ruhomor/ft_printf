@@ -24,30 +24,28 @@ int		ft_handle_h(t_prnt info, char **numstr, long long int num)
 {
 	char	*buf;
 
-	if ((!(num == 0)) && (**numstr != '\0'))
+	if ((info.type == 'o') && (**numstr != '0') && (**numstr != '\0')) //condition 0
 	{
-		if ((info.type == 'o') && (**numstr != '0'))
-		{
-			buf = *numstr;
-			*numstr = ft_strjoin("0", *numstr);
-			free(buf);
-			return (1);
-		}
-		else if (info.type == 'x')
-		{
-			buf = *numstr;
-			*numstr = ft_strjoin("0x", *numstr);
-			free(buf);
-			return (2);
-		}
-		else if (info.type == 'X')
-		{
-			buf = *numstr;
-			*numstr = ft_strjoin("0X", *numstr);
-			free(buf);
-			return (2);
-		}
+		buf = *numstr;
+		*numstr = ft_strjoin("0", *numstr);
+		free(buf);
+		return (1);
 	}
+	else if (info.type == 'x') //  condition 0x
+	{
+		buf = *numstr;
+		*numstr = ft_strjoin("0x", *numstr);
+		free(buf);
+		return (2);
+	}
+	else if (info.type == 'X')
+	{
+		buf = *numstr;
+		*numstr = ft_strjoin("0X", *numstr);  //  condition 0X
+		free(buf);
+		return (2);
+	}
+	return (0);
 }
 
 void		ft_chars(t_prnt info, char **numstr, int num)
@@ -284,8 +282,8 @@ size_t		ft_converse(t_prnt info, long long int num, char **numstr)
 		return (1);
 	}
 	len = ft_strlen(*numstr);
-	//if ((info.alt_form == 1) && (num != 0)) //why (num != 0) ?
-		//len -= ft_handle_h(info, numstr, num);
+	if ((info.alt_form == 1) && (num != 0)) //why (num != 0) ?
+		len -= ft_handle_h(info, numstr, num);
 	if (ft_ifin(info.type, "id") && (num < 0))
 		len -= 1;
 	return (len);
@@ -351,6 +349,7 @@ char		*ft_precise(t_prnt info, long long int num)
 	char	*buf;
 	int		numlen;
 	int 	shift;
+	int		zeros;
 
 	shift = 0;
 	numlen = ft_converse(info, num, &numstr);
@@ -361,9 +360,13 @@ char		*ft_precise(t_prnt info, long long int num)
 			shift += 1;
 		if (ft_ifin(info.type, "xX") && (info.alt_form == 1) && (num != 0)) // add 0x for hex condition
 			shift += 2;
-		if ((info.type == 'o') && (info.alt_form == 1) && (num != 0) && (**numstr != '0') && (**numstr != '\0')) // add 0 for octal condition
+		if ((info.type == 'o') && (info.alt_form == 1) && (num != 0) && (*numstr != '0') && (*numstr != '\0')) // add 0 for octal condition
 			shift += 1;
-		numstr = ft_strjoin(ft_strzeros(info.precision - (numlen)), numstr + shift);
+		zeros = info.precision - numlen - shift;
+		if (zeros >= 0)
+			numstr = ft_strjoin(ft_strzeros(zeros), numstr + shift);
+		else
+			numstr = ft_strjoin(ft_strzeros(0), numstr + shift);
 		free(buf);
 		ft_formnsign(info, &numstr, num);
 	}
