@@ -371,6 +371,8 @@ char		*ft_precise(t_prnt info, long long int num)
 		ft_formnsign(info, &numstr, num);
 	}
 	ft_manageplus(info, &numstr, num);
+	if ((info.type == 'o') && (info.alt_form == 1) && (num == 0))
+		numstr = ft_strzeros(1);
 	return (numstr);
 }
 

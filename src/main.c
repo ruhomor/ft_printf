@@ -26,5 +26,10 @@ int		main(void)
 	ft_printf("{%d}\n", ft_printf("\033[1;31mTest 5 => \033[0m|%#.o|", 0));
 	printf("{%d}\n", printf("\033[1;32mTest own => \033[0m|%.o|", 0));
 	ft_printf("{%d}\n", ft_printf("\033[1;31mTest own => \033[0m|%.o|", 0));
+	
+	printf("{%d}\n", printf("\033[1;32mTest 5 => \033[0m|%#.x|", 0));
+	ft_printf("{%d}\n", ft_printf("\033[1;31mTest 5 => \033[0m|%#.x|", 0));
+	printf("{%d}\n", printf("\033[1;32mTest own => \033[0m|%.x|", 0));
+	ft_printf("{%d}\n", ft_printf("\033[1;31mTest own => \033[0m|%.x|", 0));
 	return (0);
 }
