@@ -360,7 +360,7 @@ char		*ft_precise(t_prnt info, long long int num)
 			shift += 1;
 		if (ft_ifin(info.type, "xX") && (info.alt_form == 1) && (num != 0)) // add 0x for hex condition
 			shift += 2;
-		if ((info.type == 'o') && (info.alt_form == 1) && (num != 0) && (*numstr != '0') && (*numstr != '\0')) // add 0 for octal condition
+		if ((info.type == 'o') && (info.alt_form == 1) && (num != 0) && (*numstr != '\0')) // add 0 for octal condition BROKEN
 			shift += 1;
 		zeros = info.precision - numlen - shift;
 		if (zeros >= 0)
