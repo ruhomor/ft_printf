@@ -6,47 +6,39 @@
 #    By: kachiote <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/03 14:53:22 by kachiote          #+#    #+#              #
-#    Updated: 2020/09/07 23:48:57 by sslift           ###   ########.fr        #
+#    Updated: 2020/09/09 22:44:17 by sslift           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-NAME = ft_printf
+NAME = libftprintf.a
 
 CFILES = ft_printf \
 		flags \
 		conversions \
-		ft_ftoa \
-		printf_debug
-		#main
+		ft_ftoa
 
 SRCS = $(patsubst %, %.c, $(CFILES))
 
 OUT = $(patsubst %, %.o, $(CFILES))
 
-INCL = libft/libft.a
+INCL = ./
 
-FLAGS =
+FLAGS = -Werror -Wextra -Wall
 
 LIB = ./libft
 
-test:
-	@make -C $(LIB)
-	@$(CC) -o test $(SRCS) $(INCL)
-
-retest:
-	@rm -f test
-	@make test
-
 all: $(NAME)
 
-%.o:%.c -I./
+%.o:%.c -I$(INCL)
 	@$(CC) $(FLAGS) $(INCL) $< -o $@
 
-$(NAME):
+$(NAME): $(OUT)
 	@make -C $(LIB)
-	@$(CC) $(FLAGS) -o $(NAME) $(SRCS) $(INCL)
+	@cp libft/libft.a ./$(NAME)
+	@ar rc $(NAME) $(OUT)
+	@ranlib $(NAME)
 
 clean:
 	@rm -f $(OUT)

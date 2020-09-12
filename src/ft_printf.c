@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/08 01:53:56 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/10 23:41:15 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,21 +270,31 @@ size_t		ft_converse(t_prnt info, long long int num, char **numstr)
 {
 	size_t	len;
     //if (ft_ifin(info.type, "idu"))
-	if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
+	//printf("\nPRECISION: %d\n", info.precision);
+	if ((info.alt_form == 1) && ((info.precision == -2) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
 		*numstr = ft_strnew(0);
-	else if (ft_ifin(info.type, "id"))
-		*numstr = ft_itoal(num);  //  allocs numstr
-	else if (ft_ifin(info.type, "ouxX"))
-		ft_based(info, numstr, num);
-	else if (info.type == 'c')
+	else
 	{
-		ft_chars(info, numstr, num);
-		return (1);
+		if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
+			*numstr = ft_strnew(0);
+		else
+		{
+			if (ft_ifin(info.type, "id"))
+				*numstr = ft_itoal(num);  //  allocs numstr
+			else if (ft_ifin(info.type, "ouxX"))
+				ft_based(info, numstr, num);
+			else if (info.type == 'c')
+			{
+				ft_chars(info, numstr, num);
+				return (1);
+			}
+		}
 	}
 	len = ft_strlen(*numstr);
 	if ((info.alt_form == 1) && (num != 0)) //why (num != 0) ?
 		len -= ft_handle_h(info, numstr, num);
-	if (ft_ifin(info.type, "id") && (num < 0))
+	if ((ft_ifin(info.type, "id") && (num < 0)))
+			//|| ((num == 0) && (ft_ifin(info.type, "xX"))))
 		len -= 1;
 	return (len);
 	//return (ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
@@ -296,7 +306,7 @@ void		ft_manageplus(t_prnt info, char **numstr, long long int num)
 {
 	char	*buf;
 
-	if ((num > 0) * ft_ifin(info.type, "id") && (info.sign_char == '+'))
+	if ((num >= 0) * ft_ifin(info.type, "id") && (info.sign_char == '+'))
 	{
 		buf = *numstr;
 		*numstr = ft_strjoin("+", *numstr);
@@ -479,11 +489,15 @@ int		ft_sp_doxc(t_prnt info)
 	int		numlen;
 	char	*str;
 
-	numstr = read_arg(info);
-	if (info.precision != -1)
-		info.pad = ' ';
+//	if (info.precision != -1)
+//		info.pad = ' ';
 	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
 		info.pad = ' ';
+	if (((info.min_width > info.precision)) && (info.pad == '0')) // stupid TEST TEST this
+		info.precision = info.min_width; // stupid TEST TEST this
+	if (info.alt_form == 1)  // TEST stupid
+		info.precision -= 2; // TEST stupid
+	numstr = read_arg(info);
 	str = NULL;
 	numlen = ft_strlen(numstr) + (info.type == 'c') * (*numstr == '\0');
 	if (info.min_width > numlen)
@@ -549,11 +563,9 @@ int		ft_sp_s(t_prnt info)
 		}
 		ft_putstr(numstr);
 	}
+	info.len += ft_strlen(numstr);
 	if (clear)
-	{
-		info.len += ft_strlen(numstr);
 		free(numstr);
-	}
 	return (info.len);
 }
 
