@@ -6,7 +6,7 @@
 /*   By: sslift <sslift@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 22:31:50 by sslift            #+#    #+#             */
-/*   Updated: 2020/09/11 00:08:57 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/12 22:39:18 by kachiote         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,4 +136,3 @@ int 	ft_flag(t_prnt info, char **c)
 	}
 	return (ft_width(info, c));
 }
-

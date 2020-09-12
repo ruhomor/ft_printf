@@ -43,12 +43,11 @@ int		ft_printarg(t_prnt	info);
 int		ft_sp_doxc(t_prnt	info);
 int		ft_sp_u(t_prnt	info);
 int		ft_sp_c(t_prnt	info);
-char    *ft_ftoa(long double n, int precision);
-int 	ft_ifin(char c, const char *s);
+char	*ft_ftoa(long double n, int precision);
+int		ft_ifin(char c, const char *s);
 int		ft_conversion(t_prnt info, char **c);
-int 	ft_flag(t_prnt info, char **c);
+int		ft_flag(t_prnt info, char **c);
 int		ft_if_zero_minus(long double zero);
 char	*ft_itoa_basel(unsigned long long int nb, char base);
-
 
 #endif

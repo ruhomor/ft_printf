@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/10 23:41:15 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/13 00:04:45 by kachiote         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,244 +241,82 @@ static	int	ft_reqsizel(long long int n)
 	return (res);
 }
 
-char		*ft_itoal(long long int n)
+char		*ft_itoal(long long int n, char	*sign)
 {
 	int						rsize;
 	unsigned long long int	un;
-	short int				sign;
 	char					*res;
 
-	sign = 0;
 	if (n < 0)
 	{
-		sign = 1;
+		*sign = '-';
 		un = -n;
 	}
 	else
 		un = n;
-	rsize = ft_reqsizel(n) + sign;
+	rsize = ft_reqsizel(n);
 	if (!(res = ft_strnew(rsize)))
 		return (NULL);
 	res[rsize] = '\0';
-	if (sign == 1)
-		*res = '-';
 	ft_writenbrl(res, un, rsize);
 	return (res);
 }
 
-size_t		ft_converse(t_prnt info, long long int num, char **numstr)
-{
-	size_t	len;
-    //if (ft_ifin(info.type, "idu"))
-	//printf("\nPRECISION: %d\n", info.precision);
-	if ((info.alt_form == 1) && ((info.precision == -2) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
-		*numstr = ft_strnew(0);
-	else
-	{
-		if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
-			*numstr = ft_strnew(0);
-		else
-		{
-			if (ft_ifin(info.type, "id"))
-				*numstr = ft_itoal(num);  //  allocs numstr
-			else if (ft_ifin(info.type, "ouxX"))
-				ft_based(info, numstr, num);
-			else if (info.type == 'c')
-			{
-				ft_chars(info, numstr, num);
-				return (1);
-			}
-		}
-	}
-	len = ft_strlen(*numstr);
-	if ((info.alt_form == 1) && (num != 0)) //why (num != 0) ?
-		len -= ft_handle_h(info, numstr, num);
-	if ((ft_ifin(info.type, "id") && (num < 0)))
-			//|| ((num == 0) && (ft_ifin(info.type, "xX"))))
-		len -= 1;
-	return (len);
-	//return (ft_strlen(*numstr) - ft_ifin(info.type, "id") * (num < 0)
-	//		- (info.alt_form) * ((2 * ft_ifin(info.type, "xX")
-	//			+ (info.type == 'o')))* (num != 0));
-}
-
-void		ft_manageplus(t_prnt info, char **numstr, long long int num)
-{
-	char	*buf;
-
-	if ((num >= 0) * ft_ifin(info.type, "id") && (info.sign_char == '+'))
-	{
-		buf = *numstr;
-		*numstr = ft_strjoin("+", *numstr);
-		free(buf);
-	}
-	if (info.sign_char == ' ')
-	{
-		buf = *numstr;
-		*numstr = ft_strjoin(" ", *numstr);
-		free(buf);
-	}
-}
-
-void		ft_formnsign(t_prnt info, char **numstr, long long int num)
-{
-	char	*buf;
-
-	if ((num < 0) * ft_ifin(info.type, "id")) //add - for decimal condition
-	{
-		buf = *numstr;
-		*numstr = ft_strjoin("-", *numstr);
-		free(buf);
-	}
-	if ((info.alt_form == 1) && (num != 0))
-	{
-		if (info.type == 'x') //add 0x for hexa condition
-		{
-			buf = *numstr;
-			*numstr = ft_strjoin("0x", *numstr);
-			free(buf);
-		}
-		if (info.type == 'X')  //add 0X for hexa condition
-		{
-			buf = *numstr;
-			*numstr = ft_strjoin("0X", *numstr);
-			free(buf);
-		}
-		else if ((info.type == 'o') && (**numstr != '0') && (**numstr != '\0')) //add 0 for octal condition
-		{
-			buf = *numstr;
-			*numstr = ft_strjoin("0", *numstr);
-			free(buf);
-		}
-	}
-}
-
-char		*ft_precise(t_prnt info, long long int num)
+char		*ft_strnbr(t_prnt info, long long int num)
 {
 	char	*numstr;
-	char	*buf;
-	int		numlen;
-	int 	shift;
-	int		zeros;
 
-	shift = 0;
-	numlen = ft_converse(info, num, &numstr);
-	if ((info.precision > (numlen)) && (!(info.type == 'c')))
+	if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
+		return (ft_strnew(0));
+	else
 	{
-		buf = numstr;
-		if (ft_ifin(info.type, "id") && (num < 0)) // add - for decimal condition
-			shift += 1;
-		if (ft_ifin(info.type, "xX") && (info.alt_form == 1) && (num != 0)) // add 0x for hex condition
-			shift += 2;
-		if ((info.type == 'o') && (info.alt_form == 1) && (num != 0) && (*numstr != '\0')) // add 0 for octal condition BROKEN
-			shift += 1;
-		zeros = info.precision - numlen - shift;
-		if (zeros >= 0)
-			numstr = ft_strjoin(ft_strzeros(zeros), numstr + shift);
+		if (ft_ifin(info.type, "id"))
+			*numstr = ft_itoal(num);  //  allocs numstr
 		else
-			numstr = ft_strjoin(ft_strzeros(0), numstr + shift);
-		free(buf);
-		ft_formnsign(info, &numstr, num);
+		{
+			if (ft_ifin(info.type, "ouxX"))
+				ft_based(info, numstr, num);
+			else if (info.type == 'c')
+				ft_chars(info, numstr, num);
+		}
 	}
-	ft_manageplus(info, &numstr, num);
-	if ((info.type == 'o') && (info.alt_form == 1) && (num == 0))
-		numstr = ft_strzeros(1);
 	return (numstr);
 }
 
-int	ft_print_pad(t_prnt info, char **str, char **numstr)
-{
-	if (info.left)
-	{
-		if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
-		{
-			ft_putchar(0);
-			info.len += 1;
-		}
-		ft_putstr(*numstr);
-		info.len += ft_strlen(*numstr);
-		free(*numstr);  //  frees numstr
-		if (*str)
-		{
-			ft_putstr(*str);
-			info.len += ft_strlen(*str);
-			free(*str);  //  frees str
-		}
-	}
-	else
-	{
-		if (*str)
-		{
-			ft_putstr(*str);
-			info.len += ft_strlen(*str);
-			free(*str);  //  frees str
-		}
-		if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
-		{
-			ft_putchar(0);
-			info.len += 1;
-		}
-		ft_putstr(*numstr);
-		info.len += ft_strlen(*numstr);
-		free(*numstr);  //  frees num
-	}
-	return (info.len);
-}
-
-void	ft_manageminus(t_prnt info, char **str, char **numstr)
-{
-	char	*buf;
-	char	*ddel;
-
-	if ((*str) && (**str == '0') && (*numstr) && (**numstr == '-'))
-	{
-		ddel = *str;
-		buf = ft_strdup("-");
-		ft_strcat(buf, *str);
-		*str = buf;
-		free(ddel);
-		ddel = *numstr;
-		buf = ft_strnew(0);
-		ft_strcat(buf, *numstr + 1);
-		*numstr = buf;
-		free(ddel);
-	}
-}
-
-char		*read_arg(t_prnt info)
+char		*read_arg(t_prnt info, char	*sign_char)
 {
 	char	*numstr;
 
 	if (info.type == 'u')
 	{
 		if (info.size == 1)
-			numstr = ft_precise(info, (unsigned short int)va_arg(*(info.lst), unsigned int));
+			numstr = ft_strnbr(info, (unsigned short int)va_arg(*(info.lst), unsigned int), sign_char);
 		else if (info.size == 2)
-			numstr = ft_precise(info, (unsigned char)va_arg(*(info.lst), unsigned int));
+			numstr = ft_strnbr(info, (unsigned char)va_arg(*(info.lst), unsigned int), sign_char);
 		else if (info.size == 3)
-			numstr = ft_precise(info, va_arg(*(info.lst), unsigned long int));
+			numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned long int), sign_char);
 		else if (info.size == 4)
-			numstr = ft_precise(info, va_arg(*(info.lst), unsigned long long int));
+			numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned long long int), sign_char);
 		else
-			numstr = ft_precise(info, va_arg(*(info.lst), unsigned int));
+			numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned int), sign_char);
 	}
 	else if (info.type == '%')
 	{
 		info.type = 'c';
-		numstr = ft_precise(info, '%');
+		numstr = ft_strnbr(info, '%');
 	}
 	else
 	{
 		if (info.size == 1)
-			numstr = ft_precise(info, (short int)va_arg(*(info.lst), int));
+			numstr = ft_strnbr(info, (short int)va_arg(*(info.lst), int), sign_char);
 		else if (info.size == 2)
-			numstr = ft_precise(info, (char)va_arg(*(info.lst), int));
+			numstr = ft_strnbr(info, (char)va_arg(*(info.lst), int), sign_char);
 		else if (info.size == 3)
-			numstr = ft_precise(info, va_arg(*(info.lst), long int));
+			numstr = ft_strnbr(info, va_arg(*(info.lst), long int), sign_char);
 		else if (info.size == 4)
-			numstr = ft_precise(info, va_arg(*(info.lst), long long int));
+			numstr = ft_strnbr(info, va_arg(*(info.lst), long long int), sign_char);
 		else
-			numstr = ft_precise(info, va_arg(*(info.lst), int));
+			numstr = ft_strnbr(info, va_arg(*(info.lst), int), sign_char);
 	}
 	return (numstr);
 }
@@ -489,14 +327,8 @@ int		ft_sp_doxc(t_prnt info)
 	int		numlen;
 	char	*str;
 
-//	if (info.precision != -1)
-//		info.pad = ' ';
 	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
 		info.pad = ' ';
-	if (((info.min_width > info.precision)) && (info.pad == '0')) // stupid TEST TEST this
-		info.precision = info.min_width; // stupid TEST TEST this
-	if (info.alt_form == 1)  // TEST stupid
-		info.precision -= 2; // TEST stupid
 	numstr = read_arg(info);
 	str = NULL;
 	numlen = ft_strlen(numstr) + (info.type == 'c') * (*numstr == '\0');
@@ -510,6 +342,35 @@ int		ft_sp_doxc(t_prnt info)
 	return (info.len);
 }
 
+int		ft_sp_doxc_new(t_prnt info)
+{
+	char	*numstr;
+	int		numlen;
+
+	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
+		info.pad = ' ';
+	numstr = read_arg_new(info, &info.sign_char);
+	if (info.precision >= 0)
+	{
+		info.pad = ' ';
+		numlen = ft_strlen(num);
+		if (info.precision > numlen)
+		{
+			приклеить
+			нули
+		}
+		//приписываем
+		//форму
+		numlen = ft_strlen(num);
+		if (info.min_width > numlen)
+		{
+			//приклеим
+			//пробелы
+		}
+	}
+
+}
+
 int		ft_sp_s(t_prnt info)
 {
 	char	*numstr;
@@ -520,8 +381,6 @@ int		ft_sp_s(t_prnt info)
 
 	str = 0;
 	clear = FALSE;
-    //if (info.precision != -1)
-    //    info.pad = ' ';
 	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
 		info.pad = ' ';
 	numstr = va_arg(*(info.lst), char *);  //  does it allocs - MALLOCS??????
@@ -613,6 +472,7 @@ int			ft_sp_f(t_prnt info)
 
 int			ft_printarg(t_prnt info)
 {
+
 	int		(*parg[11]) ();
 	const char	*blabs = "diouxXc%fFs";//fF";
 
