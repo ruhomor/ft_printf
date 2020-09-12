@@ -69,6 +69,17 @@ int 	ft_precision(t_prnt info, char **c)
         precision = 0;
         (*c)++;
     }
+    if (**c == '*')
+	{
+    	precision = va_arg(*(info.lst), int);
+    	if (precision < 0 && (*(*c + 1) != 's'))
+    		precision = 0;
+    	else if (precision < 0)
+    		precision = -precision;
+		(*c)++;
+		if (ft_ifin(**c, "1234567890"))
+			precision = 0;
+	}
     while (ft_ifin(**c, "1234567890"))
     {
         precision *= 10;
@@ -84,6 +95,18 @@ int 	ft_width(t_prnt info, char **c)
     int width;
 
     width = 0;
+    if (**c == '*')
+	{
+		width = va_arg(*(info.lst), int);
+		if (width < 0)
+		{
+			info.left = TRUE;
+			width = -width;
+		}
+		(*c)++;
+		if (ft_ifin(**c, "1234567890"))
+			width = 0;
+	}
     while (ft_ifin(**c, "1234567890"))
     {
         width *= 10;

@@ -49,9 +49,7 @@
 char    *ft_ftoa(long double n, int precision)
 {
     char *res;
-    int u;
-    //TODO change from int to uint_64
-    //unsigned long long u;
+    unsigned long long int u;
     long double f;
     int pr;
 
@@ -68,17 +66,17 @@ char    *ft_ftoa(long double n, int precision)
     while (0 < pr--)
         f /= 10;
     n += f;
-    u = (int)n;
+    u = (unsigned long long int)n;
     f = n - u;
-    ft_strcat(res, ft_itoa(u));
+    ft_strcat(res, ft_itoa_basel(u, 10));
     if (precision > 0)
         ft_strcat(res, ".");
     while (0 < precision--)
     {
         f *= 10;
-        u = (int)f;
+        u = (unsigned long long int)f;
         f -= u;
-        ft_strcat(res, ft_itoa(u));
+        ft_strcat(res, ft_itoa_basel(u, 10));
     }
     return res;
 }

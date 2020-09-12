@@ -380,6 +380,11 @@ int	ft_print_pad(t_prnt info, char **str, char **numstr)
 {
 	if (info.left)
 	{
+		if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+		{
+			ft_putchar(0);
+			info.len += 1;
+		}
 		ft_putstr(*numstr);
 		info.len += ft_strlen(*numstr);
 		free(*numstr);  //  frees numstr
@@ -397,6 +402,11 @@ int	ft_print_pad(t_prnt info, char **str, char **numstr)
 			ft_putstr(*str);
 			info.len += ft_strlen(*str);
 			free(*str);  //  frees str
+		}
+		if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+		{
+			ft_putchar(0);
+			info.len += 1;
 		}
 		ft_putstr(*numstr);
 		info.len += ft_strlen(*numstr);

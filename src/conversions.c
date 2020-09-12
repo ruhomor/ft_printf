@@ -19,6 +19,7 @@ int	ft_conversion(t_prnt info, char **c)
 	{
 		info.type = 'x';
 		info.alt_form = 1;
+		info.size = 4;
 	}
 	return (ft_printarg(info));
 }
