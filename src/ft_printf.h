@@ -25,7 +25,7 @@ typedef struct	s_prnt
 	va_list		*lst;
 	char		type;
 	int 		left; //FALSE
-	int			sign_char; //''
+	char		sign_char; //''
 	char		pad; //' '
 	int 		alt_form; //FALSE
 	int 		min_width; //0
