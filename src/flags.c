@@ -119,6 +119,11 @@ int 	ft_width(t_prnt info, char **c)
 
 int 	ft_flag(t_prnt info, char **c)
 {
+    if (**c == '\0')
+    {
+        info.lst++;
+        return (0);
+    }
 	while (ft_ifin(**c, "#+-0 "))
 	{
 		if (**c == '-')

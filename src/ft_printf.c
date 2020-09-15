@@ -519,24 +519,46 @@ int		ft_sp_doxc_new(t_prnt info)
 		else
 		{
 		    if (info.precision >= 0)
-			    info.pad = ' ';
-			numlen = ft_strlen(numstr);
-            if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
-                numlen += 1;
-			if (info.precision > numlen)
-				ft_gluezeros(info.precision - numlen, &numstr); //приписываем нули
-			if (!(ft_ifin(info.type, "xX")))  // hopefully last bug[1/2]
-				ft_numstart(info, &numstr);
-		// приписываем
-		// форму
-			numlen = ft_strlen(numstr);
-            if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
-                numlen += 1;
-			if (info.min_width > numlen)
-				ft_pudding(info, numstr, &str);
-			// приклеим
-			// пробелы
-			return (ft_printout(info, &str, &numstr));
+		    {
+                info.pad = ' ';
+                numlen = ft_strlen(numstr);
+                if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+                    numlen += 1;
+                if (info.precision > numlen)
+                    ft_gluezeros(info.precision - numlen, &numstr); //приписываем нули
+                if (!(ft_ifin(info.type, "xX")))  // hopefully last bug[1/2]
+                    ft_numstart(info, &numstr);
+                // приписываем
+                // форму
+                numlen = ft_strlen(numstr);
+                if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+                    numlen += 1;
+                if (info.min_width > numlen)
+                    ft_pudding(info, numstr, &str);
+                // приклеим
+                // пробелы
+                return (ft_printout(info, &str, &numstr));
+            }
+            else // when precision is -1 meaning there is no . (zero)
+            {
+                numlen = ft_strlen(numstr);
+                if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+                    numlen += 1;
+                if (info.min_width > numlen)  // padding conditions
+                {
+                    if (info.pad == '0')
+                        ft_gluezeros(info.min_width - numlen - ft_formcounter(info, numstr), &numstr);
+                    ft_numstart(info, &numstr);
+                    if (info.pad == ' ')
+                        ft_pudding(info, numstr, &str);
+                }
+                else
+                {
+                    if (!(ft_ifin(info.type, "xX")))
+                        ft_numstart(info, &numstr);
+                }
+                return (ft_printout(info, &str, &numstr));
+            }
 		}
 		ft_pudding(info, numstr, &str);
 		// вывод
@@ -745,7 +767,8 @@ int			ft_printf(char *c, ...)
 			c++;
 			res += ft_flag(info, &c);
 		}
-		c++;
+		if (*c != '\0')
+		    c++;
 	}
 	va_end(lst);
 	return (res);
