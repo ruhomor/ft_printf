@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/15 19:58:18 by kachiote         ###   ########.fr       */
+/*   Updated: 2020/09/15 20:25:17 by kachiote         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,13 +319,13 @@ void		read_arg(t_prnt info, char	*sign_char, char **numstr)
 			*numstr = ft_strnbr(info, va_arg(*(info.lst), int), sign_char);
 	}
 }
-
-int		ft_sp_doxc(t_prnt info)
+/*
+int		ft_sp_doxc(t_prnt info) //old
 {
 	char	*numstr;
 	int		numlen;
 	char	*str;
-
+//old
 	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
 		info.pad = ' ';
 	numstr = read_arg(info, &info.sign_char);
@@ -340,7 +340,7 @@ int		ft_sp_doxc(t_prnt info)
 	info.len = ft_print_pad(info, &str, &numstr);
 	return (info.len);
 }
-
+*/
 void	ft_pudding(t_prnt info, char *numstr, char **str)
 {
 	int		numlen;
@@ -392,6 +392,30 @@ void	ft_gluezeros(int zeros, char **numstr)
 		*numstr = ft_strjoin(zerostring, *numstr);
 		free(buf);
 		free(zerostring);
+}
+
+int		ft_formcounter(t_prnt info, char *numstr)
+{
+
+	if (ft_ifin(info.type, "di"))
+	{
+		if (info.sign_char)
+			return (1);
+	}
+	if (ft_ifin(info.type, "xX"))
+	{
+		if (info.alt_form == 1)
+			return (2);
+	}
+	if (info.type == 'o')
+	{
+		if (info.alt_form == 1)
+		{
+			if (*numstr != '0')
+				return (1);
+		}
+	}
+	return (0);
 }
 
 void	ft_numstart(t_prnt info, char **numstr)
@@ -448,6 +472,7 @@ int		ft_sp_doxc_new(t_prnt info)
 	char	*numstr;
 	int		numlen;
 	char	*str;
+	int		form;
 
 	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
 		info.pad = ' ';
@@ -507,7 +532,7 @@ int		ft_sp_doxc_new(t_prnt info)
 		if (info.min_width > numlen)  // padding conditions
 		{
 			if (info.pad == '0')
-				ft_gluezeros(info.min_width - numlen, &numstr);
+				ft_gluezeros(info.min_width - numlen - ft_formcounter(info, numstr), &numstr);
 			ft_numstart(info, &numstr);
 			if (info.pad == ' ')
 				ft_pudding(info, numstr, &str);
