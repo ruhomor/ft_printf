@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/15 20:25:17 by kachiote         ###   ########.fr       */
+/*   Updated: 2020/09/15 22:32:34 by kachiote         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,10 +269,10 @@ char		*ft_itoal(long long int n, char	*sign)
 
 char		*ft_strnbr(t_prnt info, long long int num, char *sign_char)
 {
-	if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
-		return (ft_strnew(0));
-	else
-	{
+	//if (((info.precision == 0) && (num == 0)) && (ft_ifin(info.type, "iduoxX")))
+	//	return (ft_strnew(0));
+	//else
+	//{
 		if (ft_ifin(info.type, "id"))
 			return (ft_itoal(num, sign_char));  //  allocs numstr
 		else
@@ -282,7 +282,7 @@ char		*ft_strnbr(t_prnt info, long long int num, char *sign_char)
 			else if (info.type == 'c')
 				return (ft_chars(info, num)); // allocs???
 		}
-	}
+	//}
 }
 
 void		read_arg(t_prnt info, char	*sign_char, char **numstr)
@@ -346,6 +346,8 @@ void	ft_pudding(t_prnt info, char *numstr, char **str)
 	int		numlen;
 
 	numlen = ft_strlen(numstr);
+    if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+        numlen += 1;
 	if (info.min_width > numlen)
 	{
 		*str = ft_strnew(info.min_width - numlen);
@@ -359,8 +361,13 @@ int		ft_printout(t_prnt info, char **str, char **numstr)
 {
 	if (info.left == 1)
 	{
-		ft_putstr(*numstr);
-		if (*str)
+        if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+        {
+            ft_putchar(0);
+            info.len += 1;
+        }
+	    ft_putstr(*numstr);
+		if (*str) //troublesome
 		{
 			ft_putstr(*str);
 			info.len += ft_strlen(*str);
@@ -369,12 +376,17 @@ int		ft_printout(t_prnt info, char **str, char **numstr)
 	}
 	else
 	{
-		if (*str)
+		if (*str) // troublesome
 		{
 			ft_putstr(*str);
 			info.len += ft_strlen(*str);
 			free(*str);
 		}
+        if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+        {
+            ft_putchar(0);
+            info.len += 1;
+        }
 		ft_putstr(*numstr);
 	}
 	info.len += ft_strlen(*numstr);
@@ -472,11 +484,12 @@ int		ft_sp_doxc_new(t_prnt info)
 	char	*numstr;
 	int		numlen;
 	char	*str;
-	int		form;
 
+	str = ft_strnew(0);
 	if ((info.left == 1) && (info.pad == '0')) //  ignore '0' if '-' is present
 		info.pad = ' ';
 	read_arg(info, &info.sign_char, &numstr);
+	//printf("numstr: %s %c:", numstr, info.type);  //debug stupid delete troublesome
 	if (!(ft_strcmp("0", numstr))) // if num == 0
 	{
 		if (info.precision == 0)
@@ -503,6 +516,28 @@ int		ft_sp_doxc_new(t_prnt info)
 			// приклеим
 			// пробелы
 		}
+		else
+		{
+		    if (info.precision >= 0)
+			    info.pad = ' ';
+			numlen = ft_strlen(numstr);
+            if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+                numlen += 1;
+			if (info.precision > numlen)
+				ft_gluezeros(info.precision - numlen, &numstr); //приписываем нули
+			if (!(ft_ifin(info.type, "xX")))  // hopefully last bug[1/2]
+				ft_numstart(info, &numstr);
+		// приписываем
+		// форму
+			numlen = ft_strlen(numstr);
+            if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+                numlen += 1;
+			if (info.min_width > numlen)
+				ft_pudding(info, numstr, &str);
+			// приклеим
+			// пробелы
+			return (ft_printout(info, &str, &numstr));
+		}
 		ft_pudding(info, numstr, &str);
 		// вывод
 		// вывод
@@ -514,12 +549,16 @@ int		ft_sp_doxc_new(t_prnt info)
 	{
 		info.pad = ' ';
 		numlen = ft_strlen(numstr);
-		if (info.precision > numlen)
+        if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+            numlen += 1;
+		if ((info.precision > numlen) && (info.type != 'c'))
 			ft_gluezeros(info.precision - numlen, &numstr); //приписываем нули
 		ft_numstart(info, &numstr);
 		// приписываем
 		// форму
 		numlen = ft_strlen(numstr);
+        if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+            numlen += 1;
 		if (info.min_width > numlen)
 			ft_pudding(info, numstr, &str);
 			// приклеим
@@ -529,6 +568,8 @@ int		ft_sp_doxc_new(t_prnt info)
 	else // when precision is -1 meaning there is no .
 	{
 		numlen = ft_strlen(numstr);
+        if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
+            numlen += 1;
 		if (info.min_width > numlen)  // padding conditions
 		{
 			if (info.pad == '0')
