@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/15 01:02:03 by kachiote         ###   ########.fr       */
+/*   Updated: 2020/09/15 19:58:18 by kachiote         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -501,7 +501,21 @@ int		ft_sp_doxc_new(t_prnt info)
 			// пробелы
 		return (ft_printout(info, &str, &numstr));
 	}
-
+	else // when precision is -1 meaning there is no .
+	{
+		numlen = ft_strlen(numstr);
+		if (info.min_width > numlen)  // padding conditions
+		{
+			if (info.pad == '0')
+				ft_gluezeros(info.min_width - numlen, &numstr);
+			ft_numstart(info, &numstr);
+			if (info.pad == ' ')
+				ft_pudding(info, numstr, &str);
+		}
+		else
+			ft_numstart(info, &numstr);
+		return (ft_printout(info, &str, &numstr));
+	}
 }
 
 int		ft_sp_s(t_prnt info)
@@ -614,14 +628,14 @@ int			ft_printarg(t_prnt info)
 		ft_putchar(info.type);
 		return (1);
 	}
-	parg[0] = ft_sp_doxc;
-	parg[1] = ft_sp_doxc;
-	parg[2] = ft_sp_doxc;
-	parg[3] = ft_sp_doxc;
-	parg[4] = ft_sp_doxc;
-	parg[5] = ft_sp_doxc;
-	parg[6] = ft_sp_doxc;
-	parg[7] = ft_sp_doxc;
+	parg[0] = ft_sp_doxc_new;
+	parg[1] = ft_sp_doxc_new;
+	parg[2] = ft_sp_doxc_new;
+	parg[3] = ft_sp_doxc_new;
+	parg[4] = ft_sp_doxc_new;
+	parg[5] = ft_sp_doxc_new;
+	parg[6] = ft_sp_doxc_new;
+	parg[7] = ft_sp_doxc_new;
 	parg[8] = ft_sp_f;
 	parg[9] = ft_sp_f;
 	parg[10] = ft_sp_s;
