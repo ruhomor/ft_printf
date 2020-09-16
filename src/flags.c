@@ -72,10 +72,8 @@ int 	ft_precision(t_prnt info, char **c)
     if (**c == '*')
 	{
     	precision = va_arg(*(info.lst), int);
-    	if (precision < 0 && (*(*c + 1) != 's'))
-    		precision = 0;
-    	else if (precision < 0)
-    		precision = -precision;
+    	if (precision < 0)
+    		precision = -1;
 		(*c)++;
 		if (ft_ifin(**c, "1234567890"))
 			precision = 0;

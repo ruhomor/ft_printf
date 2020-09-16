@@ -3,13 +3,22 @@
 
 int		main(void)
 {
+	printf("%d\n", sizeof(char**********));
+	printf("%d\n", sizeof(void**));
+	printf("%d\n", sizeof(void*));
+	printf("%d\n", sizeof(int**));
 //	printf("minus %+f %i\n", +0, ft_if_zero_minus(+0.0));
 //	printf("minus %+f %i", -0.0, ft_if_zero_minus(-0.0));
-	printf("st%", 3);
-	ft_printf("my%", 9);
-
-	printf("A%+03d}\n", 0);
-	ft_printf("B%+03d}\n", 0);
+	//printf("st%", 3);
+	//ft_printf("my%", 9);
+	printf("%.0p, %.p\n", 0, 0);
+	ft_printf("%.0p, %.p\n", 0, 0);
+	printf("%.*s", -3, "hello");
+	ft_printf("%.*s", -3, "hello");
+	printf("%p\n", 0);
+	ft_printf("%p\n", 0);
+	//printf("A%+03d}\n", 0);
+	//ft_printf("B%+03d}\n", 0);
 	/*
 	printf("|%.2c|\n", 'c');;
 	ft_printf("|%.2c|\n", 'c');

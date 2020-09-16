@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/15 22:32:34 by kachiote         ###   ########.fr       */
+/*   Updated: 2020/09/16 21:43:47 by kachiote         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ char		*ft_based(t_prnt info, long long int num)
 		else
 			return(ft_itoa_basel(num, 8));
 	}
-	else if (info.type == 'x')
+	else if (ft_ifin(info.type, "xp"))
 	{
 		if (info.size == 1)
 			return(ft_itoa_baseh(num, 16));
@@ -277,7 +277,7 @@ char		*ft_strnbr(t_prnt info, long long int num, char *sign_char)
 			return (ft_itoal(num, sign_char));  //  allocs numstr
 		else
 		{
-			if (ft_ifin(info.type, "ouxX"))
+			if (ft_ifin(info.type, "ouxXp"))
 				return (ft_based(info, num)); // allocs numstr
 			else if (info.type == 'c')
 				return (ft_chars(info, num)); // allocs???
@@ -287,36 +287,41 @@ char		*ft_strnbr(t_prnt info, long long int num, char *sign_char)
 
 void		read_arg(t_prnt info, char	*sign_char, char **numstr)
 {
-	if (info.type == 'u')
-	{
-		if (info.size == 1)
-			*numstr = ft_strnbr(info, (unsigned short int)va_arg(*(info.lst), unsigned int), sign_char);
-		else if (info.size == 2)
-			*numstr = ft_strnbr(info, (unsigned char)va_arg(*(info.lst), unsigned int), sign_char);
-		else if (info.size == 3)
-			*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned long int), sign_char);
-		else if (info.size == 4)
-			*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned long long int), sign_char);
-		else
-			*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned int), sign_char);
-	}
-	else if (info.type == '%')
-	{
-		info.type = 'c';
-		*numstr = ft_strnbr(info, '%', sign_char);
-	}
+	if (info.type == 'p')
+			*numstr = ft_strnbr(info, (unsigned long long int)va_arg(*(info.lst), void*), sign_char);
 	else
 	{
-		if (info.size == 1)
-			*numstr = ft_strnbr(info, (short int)va_arg(*(info.lst), int), sign_char);
-		else if (info.size == 2)
-			*numstr = ft_strnbr(info, (char)va_arg(*(info.lst), int), sign_char);
-		else if (info.size == 3)
-			*numstr = ft_strnbr(info, va_arg(*(info.lst), long int), sign_char);
-		else if (info.size == 4)
-			*numstr = ft_strnbr(info, va_arg(*(info.lst), long long int), sign_char);
+		if (info.type == 'u')
+		{
+			if (info.size == 1)
+				*numstr = ft_strnbr(info, (unsigned short int)va_arg(*(info.lst), unsigned int), sign_char);
+			else if (info.size == 2)
+				*numstr = ft_strnbr(info, (unsigned char)va_arg(*(info.lst), unsigned int), sign_char);
+			else if (info.size == 3)
+				*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned long int), sign_char);
+			else if (info.size == 4)
+				*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned long long int), sign_char);
+			else
+				*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned int), sign_char);
+		}
+		else if (info.type == '%')
+		{
+			info.type = 'c';
+			*numstr = ft_strnbr(info, '%', sign_char);
+		}
 		else
-			*numstr = ft_strnbr(info, va_arg(*(info.lst), int), sign_char);
+		{
+			if (info.size == 1)
+				*numstr = ft_strnbr(info, (short int)va_arg(*(info.lst), int), sign_char);
+			else if (info.size == 2)
+				*numstr = ft_strnbr(info, (char)va_arg(*(info.lst), int), sign_char);
+			else if (info.size == 3)
+				*numstr = ft_strnbr(info, va_arg(*(info.lst), long int), sign_char);
+			else if (info.size == 4)
+				*numstr = ft_strnbr(info, va_arg(*(info.lst), long long int), sign_char);
+			else
+				*numstr = ft_strnbr(info, va_arg(*(info.lst), int), sign_char);
+		}
 	}
 }
 /*
@@ -414,7 +419,7 @@ int		ft_formcounter(t_prnt info, char *numstr)
 		if (info.sign_char)
 			return (1);
 	}
-	if (ft_ifin(info.type, "xX"))
+	if (ft_ifin(info.type, "xXp"))
 	{
 		if (info.alt_form == 1)
 			return (2);
@@ -448,11 +453,11 @@ void	ft_numstart(t_prnt info, char **numstr)
 			free(sign);
 		}
 	}
-	if (ft_ifin(info.type, "xX"))
+	if (ft_ifin(info.type, "xXp"))
 	{
 		if (info.alt_form == 1)
 		{
-			if (info.type == 'x')
+			if (ft_ifin(info.type, "xp"))
 				sign = ft_strdup("0x");
 			else
 				sign = ft_strdup("0X");
@@ -495,7 +500,7 @@ int		ft_sp_doxc_new(t_prnt info)
 		if (info.precision == 0)
 		{
 			info.pad = ' ';
-			if (ft_ifin(info.type, "diuxX"))
+			if (ft_ifin(info.type, "diuxXp"))
 			{
 				if ((ft_ifin(info.type, "di") && (info.sign_char == '+')))
 					*numstr = '+';
@@ -513,6 +518,8 @@ int		ft_sp_doxc_new(t_prnt info)
 					numstr = ft_strnew(0);
 				}
 			}
+			if (info.type == 'p')
+				ft_numstart(info, &numstr);
 			// приклеим
 			// пробелы
 		}
@@ -708,8 +715,8 @@ int			ft_sp_f(t_prnt info)
 int			ft_printarg(t_prnt info)
 {
 
-	int		(*parg[11]) ();
-	const char	*blabs = "diouxXc%fFs";//fF";
+	int		(*parg[12]) ();
+	const char	*blabs = "diouxXc%fFsp";//fF";
 
 	if (!ft_ifin(info.type, blabs))
 	{
@@ -727,6 +734,7 @@ int			ft_printarg(t_prnt info)
 	parg[8] = ft_sp_f;
 	parg[9] = ft_sp_f;
 	parg[10] = ft_sp_s;
+	parg[11] = ft_sp_doxc_new;
 	return (parg[ft_strchr(blabs, info.type) - blabs](info));
 }
 
