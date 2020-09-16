@@ -541,7 +541,11 @@ int		ft_sp_doxc_new(t_prnt info)
                 if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
                     numlen += 1;
                 if (info.min_width > numlen)
+				{
+					if (str)
+						free(str);
                     ft_pudding(info, numstr, &str);
+				}
                 // приклеим
                 // пробелы
                 return (ft_printout(info, &str, &numstr));
@@ -557,7 +561,11 @@ int		ft_sp_doxc_new(t_prnt info)
                         ft_gluezeros(info.min_width - numlen - ft_formcounter(info, numstr), &numstr);
                     ft_numstart(info, &numstr);
                     if (info.pad == ' ')
+					{
+						if (str)
+							free(str);
                         ft_pudding(info, numstr, &str);
+					}
                 }
                 else
                 {
@@ -567,6 +575,8 @@ int		ft_sp_doxc_new(t_prnt info)
                 return (ft_printout(info, &str, &numstr));
             }
 		}
+		if (str)
+			free(str);
 		ft_pudding(info, numstr, &str);
 		// вывод
 		// вывод
@@ -589,7 +599,11 @@ int		ft_sp_doxc_new(t_prnt info)
         if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
             numlen += 1;
 		if (info.min_width > numlen)
+		{
+			if (str)
+				free(str);
 			ft_pudding(info, numstr, &str);
+		}
 			// приклеим
 			// пробелы
 		return (ft_printout(info, &str, &numstr));
@@ -605,7 +619,11 @@ int		ft_sp_doxc_new(t_prnt info)
 				ft_gluezeros(info.min_width - numlen - ft_formcounter(info, numstr), &numstr);
 			ft_numstart(info, &numstr);
 			if (info.pad == ' ')
+			{
+				if (str)
+					free(str);
 				ft_pudding(info, numstr, &str);
+			}
 		}
 		else
 			ft_numstart(info, &numstr);
