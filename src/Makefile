@@ -6,7 +6,7 @@
 #    By: kachiote <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/03 14:53:22 by kachiote          #+#    #+#              #
-#    Updated: 2020/09/16 13:12:11 by sslift           ###   ########.fr        #
+#    Updated: 2020/09/18 00:21:11 by sslift           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,18 @@ NAME = libftprintf.a
 CFILES = ft_printf \
 		flags \
 		conversions \
-		ft_ftoa
+		ft_ftoa \
+		ft_lennb \
+        ft_itoa_basehl \
+        ft_based \
+        ft_nbrmod \
+        ft_printarg \
+        ft_printout_cond \
+        ft_numstart \
+        ft_doxc \
+        ft_doxc_new \
+        ft_sp_s \
+        ft_sp_f
 
 SRCS = $(patsubst %, %.c, $(CFILES))
 
