@@ -6,7 +6,7 @@
 /*   By: kachiote <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 12:50:14 by kachiote          #+#    #+#             */
-/*   Updated: 2020/09/16 15:10:19 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/17 22:44:00 by kachiote         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,7 +464,7 @@ void		ft_numstart(t_prnt info, char **numstr)
 }
 
 void			ft_sp_doxc_zero_prec_zero_doxc(t_prnt info,
-									   char **numstr, char **str, int *numlen)
+		char **numstr)
 {
 	if ((ft_ifin(info.type, "di") && (info.sign_char == '+')))
 		**numstr = '+';
@@ -476,11 +476,11 @@ void			ft_sp_doxc_zero_prec_zero_doxc(t_prnt info,
 }
 
 void			ft_sp_doxc_zero_prec_zero(t_prnt info,
-								 char **numstr, char **str, int *numlen)
+		char **numstr)
 {
 	info.pad = ' ';
 	if (ft_ifin(info.type, "diuxXp"))
-		ft_sp_doxc_zero_prec_zero_doxc(info, numstr, str, numlen);
+		ft_sp_doxc_zero_prec_zero_doxc(info, numstr);
 	else if (info.type == 'o')
 	{
 		if (info.alt_form == 0)
@@ -493,7 +493,35 @@ void			ft_sp_doxc_zero_prec_zero(t_prnt info,
 		ft_numstart(info, numstr);
 }
 
-int 		ft_sp_doxc_zero_prec_not_zero(t_prnt info, char **numstr, char **str, int *numlen)
+int			ft_sp_doxc_zero_prec_not_zero_neg(t_prnt info, char **numstr,
+		char **str, int *numlen)
+{
+	*numlen = ft_strlen(*numstr);
+	if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+		*numlen += 1;
+	if (info.min_width > *numlen)
+	{
+		if (info.pad == '0')
+			ft_gluezeros(info.min_width - *numlen -
+					ft_formcounter(info, *numstr), numstr);
+		ft_numstart(info, numstr);
+		if (info.pad == ' ')
+		{
+			if (*str)
+				free(*str);
+			ft_pudding(info, *numstr, str);
+		}
+	}
+	else
+	{
+		if (!(ft_ifin(info.type, "xX")))
+			ft_numstart(info, numstr);
+	}
+	return (ft_printout(info, str, numstr));
+}
+
+int			ft_sp_doxc_zero_prec_not_zero(t_prnt info, char **numstr,
+		char **str, int *numlen)
 {
 	if (info.precision >= 0)
 	{
@@ -517,42 +545,66 @@ int 		ft_sp_doxc_zero_prec_not_zero(t_prnt info, char **numstr, char **str, int 
 		return (ft_printout(info, str, numstr));
 	}
 	else
-	{
-		*numlen = ft_strlen(*numstr);
-		if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
-			*numlen += 1;
-		if (info.min_width > *numlen)
-		{
-			if (info.pad == '0')
-				ft_gluezeros(info.min_width - *numlen - ft_formcounter(info, *numstr), numstr);
-			ft_numstart(info, numstr);
-			if (info.pad == ' ')
-			{
-				if (*str)
-					free(*str);
-				ft_pudding(info, *numstr, str);
-			}
-		}
-		else
-		{
-			if (!(ft_ifin(info.type, "xX")))
-				ft_numstart(info, numstr);
-		}
-		return (ft_printout(info, str, numstr));
-	}
+		return (ft_sp_doxc_zero_prec_not_zero_neg(info, numstr, str, numlen));
 }
 
-int 		ft_sp_doxc_zero(t_prnt info, char **numstr, char **str)
+int			ft_sp_doxc_zero(t_prnt info, char **numstr, char **str)
 {
-	int 	numlen;
+	int		numlen;
 
 	if (info.precision == 0)
-		ft_sp_doxc_zero_prec_zero(info, numstr, str, &numlen);
+		ft_sp_doxc_zero_prec_zero(info, numstr);
 	else
 		return (ft_sp_doxc_zero_prec_not_zero(info, numstr, str, &numlen));
 	if (*str)
 		free(*str);
 	ft_pudding(info, *numstr, str);
+	return (ft_printout(info, str, numstr));
+}
+
+int			ft_sp_doxc_new_prec_pos(t_prnt info, char **numstr,
+		char **str, int *numlen)
+{
+	info.pad = ' ';
+	*numlen = ft_strlen(*numstr);
+	if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+		*numlen += 1;
+	if ((info.precision > *numlen) && (info.type != 'c'))
+		ft_gluezeros(info.precision - *numlen, numstr);
+	ft_numstart(info, numstr);
+	*numlen = ft_strlen(*numstr);
+	if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+		*numlen += 1;
+	if (info.min_width > *numlen)
+	{
+		if (*str)
+			free(*str);
+		ft_pudding(info, *numstr, str);
+	}
+	return (ft_printout(info, str, numstr));
+}
+
+int			ft_sp_doxc_new_prec_neg(t_prnt info, char **numstr,
+		char **str, int *numlen)
+{
+	*numlen = ft_strlen(*numstr);
+	if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
+		*numlen += 1;
+	if (info.min_width > *numlen)
+	{
+		if (info.pad == '0')
+			ft_gluezeros(info.min_width - *numlen -
+					ft_formcounter(info, *numstr), numstr);
+		ft_numstart(info, numstr);
+		if (info.pad == ' ')
+		{
+			if (*str)
+				free(*str);
+			ft_pudding(info, *numstr, str);
+		}
+	}
+	else
+		ft_numstart(info, numstr);
 	return (ft_printout(info, str, numstr));
 }
 
@@ -569,46 +621,46 @@ int			ft_sp_doxc_new(t_prnt info)
 	if (!(ft_strcmp("0", numstr)))
 		return (ft_sp_doxc_zero(info, &numstr, &str));
 	if (info.precision >= 0)
+		return (ft_sp_doxc_new_prec_pos(info, &numstr, &str, &numlen));
+	else
+		return (ft_sp_doxc_new_prec_neg(info, &numstr, &str, &numlen));
+}
+
+int			ft_sp_s_printout(t_prnt info, char **numstr, char **str, int clear)
+{
+	if (info.left == 1)
 	{
-		info.pad = ' ';
-		numlen = ft_strlen(numstr);
-		if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
-			numlen += 1;
-		if ((info.precision > numlen) && (info.type != 'c'))
-			ft_gluezeros(info.precision - numlen, &numstr);
-		ft_numstart(info, &numstr);
-		numlen = ft_strlen(numstr);
-		if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
-			numlen += 1;
-		if (info.min_width > numlen)
+		ft_putstr(*numstr);
+		if (*str)
 		{
-			if (str)
-				free(str);
-			ft_pudding(info, numstr, &str);
+			ft_putstr(*str);
+			info.len += ft_strlen(*str);
+			free(*str);
 		}
-		return (ft_printout(info, &str, &numstr));
 	}
 	else
 	{
-		numlen = ft_strlen(numstr);
-		if (info.type == 'c' && !ft_strcmp(numstr, "\0"))
-			numlen += 1;
-		if (info.min_width > numlen)
+		if (*str)
 		{
-			if (info.pad == '0')
-				ft_gluezeros(info.min_width - numlen - ft_formcounter(info, numstr), &numstr);
-			ft_numstart(info, &numstr);
-			if (info.pad == ' ')
-			{
-				if (str)
-					free(str);
-				ft_pudding(info, numstr, &str);
-			}
+			ft_putstr(*str);
+			info.len += ft_strlen(*str);
+			free(*str);
 		}
-		else
-			ft_numstart(info, &numstr);
-		return (ft_printout(info, &str, &numstr));
+		ft_putstr(*numstr);
 	}
+	info.len += ft_strlen(*numstr);
+	if (clear)
+		free(*numstr);
+	return (info.len);
+}
+
+void		ft_sp_s_meme(t_prnt info, char **numstr, int *numlen)
+{
+	char *buf;
+
+	ft_strncpy(buf = ft_strnew(info.precision), *numstr, info.precision);
+	*numstr = buf;
+	*numlen = info.precision;
 }
 
 int			ft_sp_s(t_prnt info)
@@ -616,7 +668,6 @@ int			ft_sp_s(t_prnt info)
 	char	*numstr;
 	int		numlen;
 	char	*str;
-	char	*buf;
 	int		clear;
 
 	str = 0;
@@ -631,39 +682,39 @@ int			ft_sp_s(t_prnt info)
 	}
 	numlen = ft_strlen(numstr);
 	if ((info.precision != -1) && (numlen > info.precision))
-	{
-		ft_strncpy(buf = ft_strnew(info.precision), numstr, info.precision);
-		numstr = buf;
-		numlen = info.precision;
-	}
+		ft_sp_s_meme(info, &numstr, &numlen);
 	if (numlen < info.min_width)
 	{
 		str = ft_strnew(info.min_width - numlen);
 		ft_memset(str, info.pad, info.min_width - numlen);
 	}
+	return (ft_sp_s_printout(info, &numstr, &str, clear));
+}
+
+int			ft_sp_f_printout(t_prnt info, char **numstr, char **str)
+{
 	if (info.left == 1)
 	{
-		ft_putstr(numstr);
-		if (str)
+		ft_putstr(*numstr);
+		if (*str)
 		{
-			ft_putstr(str);
-			info.len += ft_strlen(str);
-			free(str);
+			ft_putstr(*str);
+			info.len += ft_strlen(*str);
+			free(*str);
 		}
 	}
 	else
 	{
-		if (str)
+		if (*str)
 		{
-			ft_putstr(str);
-			info.len += ft_strlen(str);
-			free(str);
+			ft_putstr(*str);
+			info.len += ft_strlen(*str);
+			free(*str);
 		}
-		ft_putstr(numstr);
+		ft_putstr(*numstr);
 	}
-	info.len += ft_strlen(numstr);
-	if (clear)
-		free(numstr);
+	info.len += ft_strlen(*numstr);
+	free(*numstr);
 	return (info.len);
 }
 
@@ -684,34 +735,11 @@ int			ft_sp_f(t_prnt info)
 		str = ft_strnew(info.min_width - numlen);
 		ft_memset(str, info.pad, info.min_width - numlen);
 	}
-	if (info.left == 1)
-	{
-		ft_putstr(numstr);
-		if (str)
-		{
-			ft_putstr(str);
-			info.len += ft_strlen(str);
-			free(str);
-		}
-	}
-	else
-	{
-		if (str)
-		{
-			ft_putstr(str);
-			info.len += ft_strlen(str);
-			free(str);
-		}
-		ft_putstr(numstr);
-	}
-	info.len += ft_strlen(numstr);
-	free(numstr);
-	return (info.len);
+	return (ft_sp_f_printout(info, &numstr, &str));
 }
 
 int			ft_printarg(t_prnt info)
 {
-
 	int			(*parg[12])();
 	const char	*blabs = "diouxXc%fFsp";
 
