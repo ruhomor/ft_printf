@@ -6,60 +6,52 @@
 /*   By: sslift <sslift@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 22:31:50 by sslift            #+#    #+#             */
-/*   Updated: 2020/09/16 13:24:17 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/22 11:49:24 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_ifin(char c, const char *s)
+void	ft_sizehh(t_prnt info, char **c, int *size)
 {
-	while (*s)
-		if (c == *s++)
-			return (TRUE);
-	return (FALSE);
+	(*c)++;
+	if (**c == 'h')
+	{
+		*size = 2;
+		(*c)++;
+	}
+	else
+		*size = 1;
 }
 
-int	ft_size(t_prnt info, char **c)
+int		ft_size(t_prnt info, char **c)
 {
 	int size;
 
 	size = -1;
-	while (ft_ifin(**c, "hlL"))
+	if (**c == 'h')
+		ft_sizehh(info, c, &size);
+	else if (**c == 'l')
 	{
-		if (**c == 'h')
+		(*c)++;
+		if (**c == 'l')
 		{
+			size = 4;
 			(*c)++;
-			if (**c == 'h')
-			{
-				size = 2;
-				(*c)++;
-			}
-			else
-				size = 1;
 		}
-		else if (**c == 'l')
-		{
-			(*c)++;
-			if (**c == 'l')
-			{
-				size = 4;
-				(*c)++;
-			}
-			else
-				size = 3;
-		}
-		else if (**c == 'L')
-		{
-			(*c)++;
-			size = 5;
-		}
+		else
+			size = 3;
+	}
+	else if (**c == 'L')
+	{
+		(*c)++;
+		size = 5;
 	}
 	info.size = size;
 	return (ft_conversion(info, c));
 }
 
-int	ft_precision(t_prnt info, char **c)
+int		ft_precision(t_prnt info, char **c)
 {
 	int precision;
 
@@ -71,8 +63,7 @@ int	ft_precision(t_prnt info, char **c)
 	}
 	if (**c == '*')
 	{
-		precision = va_arg(*(info.lst),
-		int);
+		precision = va_arg(*(info.lst), int);
 		if (precision < 0)
 			precision = -1;
 		(*c)++;
@@ -89,15 +80,14 @@ int	ft_precision(t_prnt info, char **c)
 	return (ft_size(info, c));
 }
 
-int	ft_width(t_prnt info, char **c)
+int		ft_width(t_prnt info, char **c)
 {
 	int width;
 
 	width = 0;
 	if (**c == '*')
 	{
-		width = va_arg(*(info.lst),
-		int);
+		width = va_arg(*(info.lst), int);
 		if (width < 0)
 		{
 			info.left = TRUE;
@@ -117,7 +107,7 @@ int	ft_width(t_prnt info, char **c)
 	return (ft_precision(info, c));
 }
 
-int	ft_flag(t_prnt info, char **c)
+int		ft_flag(t_prnt info, char **c)
 {
 	if (**c == '\0')
 	{

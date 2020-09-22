@@ -6,14 +6,14 @@
 /*   By: sslift <sslift@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 00:14:00 by sslift            #+#    #+#             */
-/*   Updated: 2020/09/18 00:14:00 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/22 12:02:03 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void			ft_sp_doxc_zero_prec_zero_doxc(t_prnt info,
-											   char **numstr)
+void		ft_sp_doxc_zero_prec_zero_doxc(t_prnt info,
+								char **numstr)
 {
 	if ((ft_ifin(info.type, "di") && (info.sign_char == '+')))
 		**numstr = '+';
@@ -24,8 +24,8 @@ void			ft_sp_doxc_zero_prec_zero_doxc(t_prnt info,
 	}
 }
 
-void			ft_sp_doxc_zero_prec_zero(t_prnt info,
-										  char **numstr)
+void		ft_sp_doxc_zero_prec_zero(t_prnt info,
+								char **numstr)
 {
 	info.pad = ' ';
 	if (ft_ifin(info.type, "diuxXp"))
@@ -43,7 +43,7 @@ void			ft_sp_doxc_zero_prec_zero(t_prnt info,
 }
 
 int			ft_sp_doxc_zero_prec_not_zero_neg(t_prnt info, char **numstr,
-												 char **str, int *numlen)
+								char **str, int *numlen)
 {
 	*numlen = ft_strlen(*numstr);
 	if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
@@ -52,7 +52,7 @@ int			ft_sp_doxc_zero_prec_not_zero_neg(t_prnt info, char **numstr,
 	{
 		if (info.pad == '0')
 			ft_gluezeros(info.min_width - *numlen -
-						 ft_formcounter(info, *numstr), numstr);
+						ft_formcounter(info, *numstr), numstr);
 		ft_numstart(info, numstr);
 		if (info.pad == ' ')
 		{
@@ -70,7 +70,7 @@ int			ft_sp_doxc_zero_prec_not_zero_neg(t_prnt info, char **numstr,
 }
 
 int			ft_sp_doxc_zero_prec_not_zero(t_prnt info, char **numstr,
-											 char **str, int *numlen)
+								char **str, int *numlen)
 {
 	if (info.precision >= 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: sslift <sslift@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 00:06:56 by sslift            #+#    #+#             */
-/*   Updated: 2020/09/18 00:06:56 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/22 11:53:39 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ char		*read_arg_u(t_prnt info, char *sign_char, char **numstr)
 							va_arg(*(info.lst), unsigned long int), sign_char);
 	else if (info.size == 4)
 		*numstr = ft_strnbr(info,
-							va_arg(*(info.lst), unsigned long long int), sign_char);
+					va_arg(*(info.lst), unsigned long long int), sign_char);
 	else
-	*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned int), sign_char);
+		*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned int), sign_char);
 }
 
 char		*read_arg_not_u(t_prnt info, char *sign_char, char **numstr)
@@ -45,7 +45,7 @@ char		*read_arg_not_u(t_prnt info, char *sign_char, char **numstr)
 		*numstr = ft_strnbr(info,
 							va_arg(*(info.lst), long long int), sign_char);
 	else
-	*numstr = ft_strnbr(info,
+		*numstr = ft_strnbr(info,
 						va_arg(*(info.lst), int), sign_char);
 }
 

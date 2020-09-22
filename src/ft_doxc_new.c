@@ -6,14 +6,14 @@
 /*   By: sslift <sslift@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 00:17:45 by sslift            #+#    #+#             */
-/*   Updated: 2020/09/18 00:17:45 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/22 12:03:53 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 int			ft_sp_doxc_new_prec_pos(t_prnt info, char **numstr,
-									   char **str, int *numlen)
+									char **str, int *numlen)
 {
 	info.pad = ' ';
 	*numlen = ft_strlen(*numstr);
@@ -35,7 +35,7 @@ int			ft_sp_doxc_new_prec_pos(t_prnt info, char **numstr,
 }
 
 int			ft_sp_doxc_new_prec_neg(t_prnt info, char **numstr,
-									   char **str, int *numlen)
+								char **str, int *numlen)
 {
 	*numlen = ft_strlen(*numstr);
 	if (info.type == 'c' && !ft_strcmp(*numstr, "\0"))
@@ -44,7 +44,7 @@ int			ft_sp_doxc_new_prec_neg(t_prnt info, char **numstr,
 	{
 		if (info.pad == '0')
 			ft_gluezeros(info.min_width - *numlen -
-						 ft_formcounter(info, *numstr), numstr);
+					ft_formcounter(info, *numstr), numstr);
 		ft_numstart(info, numstr);
 		if (info.pad == ' ')
 		{

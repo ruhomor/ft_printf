@@ -28,7 +28,8 @@ CFILES = ft_printf \
         ft_doxc \
         ft_doxc_new \
         ft_sp_s \
-        ft_sp_f
+        ft_sp_f \
+        ft_ifin
 
 SRCS = $(patsubst %, %.c, $(CFILES))
 

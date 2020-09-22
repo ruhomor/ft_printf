@@ -49,7 +49,7 @@ int			ft_sp_f(t_prnt info)
 	if (info.size == 5)
 		numstr = ft_ftoa(va_arg(*(info.lst), long double), info.precision);
 	else
-	numstr = ft_ftoa(va_arg(*(info.lst), double), info.precision);
+		numstr = ft_ftoa(va_arg(*(info.lst), double), info.precision);
 	numlen = ft_strlen(numstr);
 	if (numlen < info.min_width)
 	{
