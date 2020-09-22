@@ -61,4 +61,5 @@ char		*ft_based(t_prnt info, long long int num)
 	}
 	else if (info.type == 'u')
 		return (ft_itoa_basel(num, 10));
+	return (0);
 }

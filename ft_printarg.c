@@ -6,7 +6,7 @@
 /*   By: sslift <sslift@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/18 00:06:56 by sslift            #+#    #+#             */
-/*   Updated: 2020/09/22 11:53:39 by sslift           ###   ########.fr       */
+/*   Updated: 2020/09/22 12:43:14 by sslift           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char		*read_arg_u(t_prnt info, char *sign_char, char **numstr)
 					va_arg(*(info.lst), unsigned long long int), sign_char);
 	else
 		*numstr = ft_strnbr(info, va_arg(*(info.lst), unsigned int), sign_char);
+	return (0);
 }
 
 char		*read_arg_not_u(t_prnt info, char *sign_char, char **numstr)
@@ -47,6 +48,7 @@ char		*read_arg_not_u(t_prnt info, char *sign_char, char **numstr)
 	else
 		*numstr = ft_strnbr(info,
 						va_arg(*(info.lst), int), sign_char);
+	return (0);
 }
 
 void		read_arg(t_prnt info, char *sign_char, char **numstr)

@@ -54,4 +54,5 @@ char		*ft_strnbr(t_prnt info, long long int num, char *sign_char)
 		else if (info.type == 'c')
 			return (ft_chars(info, num));
 	}
+	return (0);
 }
